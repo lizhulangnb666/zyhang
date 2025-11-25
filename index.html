@@ -4,14 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>这语夯 | 语言连接未来</title>
-    <meta name="description" content="拒绝内卷，换个赛道！这语夯为你提供阿拉伯语、西语、法语等小语种的高薪外派就业指南与院校分析。">
-<meta name="keywords" content="小语种就业, 阿拉伯语外派, 驻外高薪, 华为外派, 语言留学, 这是一个正经网站">
-<meta name="author" content="燃尽的作者">
-
-<meta property="og:type" content="website">
-<meta property="og:title" content="这语夯 | 拒绝内卷·换个赛道">
-<meta property="og:description" content="年薪20W+的岗位都在哪？点击查看全球语言职业地图。">
-<meta property="og:image" content="logo.png">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -19,7 +11,7 @@
         body { 
             font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif; 
             margin: 0; overflow-x: hidden; color: #1e293b;
-            /* 极光流体背景：配色更柔和高级 */
+            /* 极光流体背景 */
             background: linear-gradient(-45deg, #a18cd1, #fbc2eb, #fad0c4, #ffd1ff);
             background-size: 400% 400%;
             animation: gradientBG 15s ease infinite;
@@ -66,6 +58,7 @@
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             display: flex; flex-direction: column; align-items: center; text-align: center;
             box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.05);
+            position: relative; overflow: hidden;
         }
 
         .pass-card:hover {
@@ -84,8 +77,13 @@
 
         /* 配色 */
         .card-euro .icon-circle { background: linear-gradient(135deg, #3b82f6, #2563eb); }
+        .card-euro:hover { border-color: #3b82f6; }
+
         .card-arab .icon-circle { background: linear-gradient(135deg, #f59e0b, #d97706); }
+        .card-arab:hover { border-color: #f59e0b; }
+
         .card-asia .icon-circle { background: linear-gradient(135deg, #ec4899, #db2777); }
+        .card-asia:hover { border-color: #ec4899; }
 
         /* === 底部干货说明 === */
         .info-section {
@@ -101,35 +99,36 @@
         }
         .info-card:hover { background: rgba(255, 255, 255, 0.85); transform: translateY(-3px); border-color: white; }
 
-        /* === 底部 Dock 栏 === */
+        /* === 底部 Dock 栏 (功能入口) === */
         .dock-bar {
             background: rgba(255, 255, 255, 0.8);
             backdrop-filter: blur(15px);
             border: 1px solid rgba(255, 255, 255, 0.6);
             border-radius: 24px;
             padding: 0.8rem 2.5rem;
-            display: inline-flex; gap: 2.5rem;
-            margin: 0 auto 2rem auto;
+            display: inline-flex; gap: 3rem; /* 增加间距 */
+            margin: 0 auto 4rem auto; /* 底部留白增加 */
             box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            z-index: 20; /* 确保在最上层 */
         }
         .dock-item {
-            display: flex; flex-direction: column; align-items: center; gap: 4px;
+            display: flex; flex-direction: column; align-items: center; gap: 6px;
             cursor: pointer; color: #64748b; transition: all 0.3s;
             min-width: 70px;
         }
         .dock-item:hover { color: #0f172a; transform: translateY(-4px); }
         .dock-icon {
-            width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem;
+            width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.4rem;
             transition: all 0.3s;
         }
-        .dock-item:hover .dock-icon { transform: scale(1.1); }
+        .dock-item:hover .dock-icon { transform: scale(1.1); box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
 
-        /* 邮箱 */
+        /* 邮箱悬浮 (固定右下角，不参与流式布局) */
         .mail-float { position: fixed; bottom: 30px; right: 30px; z-index: 50; }
         .mail-btn {
             width: 50px; height: 50px; background: white; border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1); transition: all 0.3s;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15); transition: all 0.3s;
             color: #64748b; font-size: 1.2rem; border: 1px solid #f1f5f9;
         }
         .mail-btn:hover { transform: scale(1.1); color: #2563eb; border-color: #2563eb; }
@@ -137,6 +136,7 @@
             position: absolute; bottom: 60px; right: 0; background: #1e293b; color: white;
             padding: 8px 12px; border-radius: 8px; font-size: 12px; opacity: 0;
             transition: opacity 0.3s; pointer-events: none; white-space: nowrap;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
         }
         .mail-btn:hover + .mail-pop { opacity: 1; }
         
@@ -149,6 +149,13 @@
         }
         @keyframes typing { from { width: 0 } to { width: 100% } }
         @keyframes blink-caret { from, to { border-color: transparent } 50% { border-color: #f59e0b; } }
+
+        /* 移动端适配 */
+        @media (max-width: 768px) {
+            .typing-effect { font-size: 1.5rem; white-space: normal; border-right: none; animation: none; }
+            .dock-bar { width: 90%; justify-content: space-around; padding: 0.8rem 1rem; gap: 0; margin-bottom: 1rem; }
+            .mail-float { bottom: 20px; right: 20px; } /* 手机上往里挪一点 */
+        }
     </style>
 </head>
 <body>
@@ -164,10 +171,10 @@
                 </div>
                 <span class="font-black text-xl text-slate-800 tracking-widest">这语夯</span>
             </div>
-            <div class="hidden md:block font-bold text-slate-500 opacity-60 text-sm">V32.0</div>
+            <div class="hidden md:block font-bold text-slate-500 opacity-60 text-sm">V33.0 全息修正版</div>
         </nav>
 
-        <div class="text-center mt-8 mb-4">
+        <div class="text-center mt-8 mb-4 px-4">
             <div class="typing-container">
                 <h1 class="text-4xl md:text-6xl font-black text-slate-900 mb-2 typing-effect">
                     拒绝内卷 · 换个赛道
@@ -220,6 +227,7 @@
         </div>
 
         <div class="mt-auto dock-bar">
+            
             <div class="dock-item" onclick="window.location.href='tools.html'">
                 <div class="dock-icon bg-green-100 text-green-600">
                     <i class="fa-solid fa-toolbox"></i>
@@ -229,12 +237,22 @@
 
             <div class="w-px bg-slate-400 h-8 self-center opacity-30"></div>
 
-            <div class="dock-item" onclick="alert('🚀 开发进度提示：\n\n核心功能已上线，开发者正在努力优化中。\n\n【未来规划】\n1. 校友匿名吐槽区 (建设中...)\n2. 前后辈经验交流 (Coming Soon)\n\n敬请期待！')">
-                <div class="dock-icon bg-indigo-100 text-indigo-600">
-                    <i class="fa-solid fa-layer-group"></i>
+            <div class="dock-item" onclick="window.location.href='community.html'">
+                <div class="dock-icon bg-red-100 text-red-600">
+                    <i class="fa-solid fa-comments"></i>
                 </div>
-                <span class="text-xs font-bold">更多功能</span>
+                <span class="text-xs font-bold">校友吐槽</span>
             </div>
+            
+            <div class="w-px bg-slate-400 h-8 self-center opacity-30"></div>
+
+            <div class="dock-item" onclick="alert('🚀 开发进度提示：\n\n【未来规划】\n1. 全球薪资计算器\n2. 前后辈经验交流区\n\n(敬请期待！)')">
+                <div class="dock-icon bg-indigo-100 text-indigo-600">
+                    <i class="fa-solid fa-rocket"></i>
+                </div>
+                <span class="text-xs font-bold">更多</span>
+            </div>
+
         </div>
 
         <div class="mail-float">

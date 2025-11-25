@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>树洞 & 吐槽 | 拒绝内卷</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://unpkg.com/@waline/client@v2/dist/waline.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* 深色赛博背景，保持网站调性 */
+        body { 
+            font-family: 'PingFang SC', sans-serif; 
+            background-color: #0f172a; 
+            color: #e2e8f0; 
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .container { max-width: 800px; margin: 0 auto; padding: 2rem 1rem; flex-grow: 1; }
+
+        /* 导航栏 */
+        .nav-bar {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 3rem; border-bottom: 1px solid #334155; padding-bottom: 1rem;
+        }
+
+        /* 头部卡片 */
+        .header-card {
+            background: linear-gradient(135deg, #1e293b, #0f172a);
+            border: 1px solid #334155;
+            border-radius: 16px;
+            padding: 2rem;
+            text-align: center;
+            margin-bottom: 3rem;
+            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5);
+        }
+
+        /* 评论区样式定制 (适配黑夜模式) */
+        #waline {
+            background: #1e293b;
+            padding: 1.5rem;
+            border-radius: 16px;
+            border: 1px solid #334155;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+        }
+
+        /* 修改 Waline 默认颜色变量 */
+        :root {
+            --waline-theme-color: #3b82f6;
+            --waline-active-color: #60a5fa;
+            --waline-bgcolor: #1e293b;
+            --waline-bgcolor-light: #334155;
+            --waline-text-color: #e2e8f0;
+            --waline-border-color: #475569;
+            --waline-info-bgcolor: #334155;
+            --waline-info-color: #94a3b8;
+        }
+        
+        /* 隐藏 Waline 版权信息 (可选) */
+        .wl-power { display: none !important; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="nav-bar">
+            <a href="index.html" class="flex items-center gap-2 text-gray-400 hover:text-white transition">
+                <i class="fa-solid fa-arrow-left"></i> 返回主页
+            </a>
+            <div class="font-bold text-blue-500 tracking-wider">ANONYMOUS ZONE</div>
+        </div>
+
+        <div class="header-card">
+            <div class="text-5xl mb-4">🎭</div>
+            <h1 class="text-3xl font-bold text-white mb-3">校友匿名吐槽区</h1>
+            <p class="text-slate-400 text-sm leading-relaxed">
+                这里是法外之地（划掉），这里是自由交流区。<br>
+                分享你的外派血泪史、避坑指南，或者单纯发泄一下。<br>
+                <span class="text-red-400 text-xs mt-2 block font-bold">*温馨提示：第一位注册登录的用户将自动成为管理员！</span>
+            </p>
+        </div>
+
+        <div id="waline"></div>
+
+    </div>
+
+    <footer class="text-center text-slate-600 text-xs py-6 border-t border-slate-800">
+        © 2025 这语夯 | 评论数据由 Zeabur 云端托管
+    </footer>
+
+    <script type="module">
+        import { init } from 'https://unpkg.com/@waline/client@v2/dist/waline.mjs';
+
+        init({
+            el: '#waline',
+            
+            // 👇 已经帮你填好了你的专属地址！
+            serverURL: 'https://zheyuhang.zeabur.app', 
+            
+            dark: true, // 强制暗黑模式
+            lang: 'zh-CN',
+            emoji: [
+                'https://unpkg.com/@waline/emojis@1.1.0/weibo',
+                'https://unpkg.com/@waline/emojis@1.1.0/bilibili',
+                'https://unpkg.com/@waline/emojis@1.1.0/qq',
+            ],
+            placeholder: '请开始你的表演... (点击右下角“登录”可注册管理员)',
+            requiredMeta: ['nick'], // 昵称必填，邮箱选填
+            pageSize: 10, // 每页显示10条
+        });
+    </script>
+
+</body>
+</html>
