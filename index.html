@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>这语夯 | 语言连接未来</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* === 全局动态背景 === */
+        body { 
+            font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif; 
+            margin: 0; overflow-x: hidden; color: #1e293b;
+            /* 极光流体背景：配色更柔和高级 */
+            background: linear-gradient(-45deg, #a18cd1, #fbc2eb, #fad0c4, #ffd1ff);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            min-height: 100vh;
+            display: flex; flex-direction: column;
+        }
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* 磨砂玻璃层罩 */
+        .glass-overlay {
+            position: fixed; inset: 0; 
+            background: rgba(255, 255, 255, 0.25); 
+            backdrop-filter: blur(35px);
+            z-index: 0;
+        }
+
+        .content-layer { position: relative; z-index: 10; flex-grow: 1; display: flex; flex-direction: column; }
+
+        /* === 导航栏 === */
+        .nav-bar {
+            padding: 1.5rem 2rem; display: flex; justify-content: space-between; align-items: center;
+        }
+
+        /* === 核心：全息通行证卡片 === */
+        .card-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            width: 90%;
+            margin: 1rem auto 2rem auto;
+        }
+
+        .pass-card {
+            background: rgba(255, 255, 255, 0.65);
+            border: 1px solid rgba(255, 255, 255, 0.9);
+            border-radius: 24px;
+            padding: 2.5rem;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex; flex-direction: column; align-items: center; text-align: center;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.05);
+        }
+
+        .pass-card:hover {
+            transform: translateY(-8px) scale(1.01);
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+        }
+
+        .icon-circle {
+            width: 80px; height: 80px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 2.5rem; margin-bottom: 1.5rem; color: white;
+            transition: transform 0.5s; box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        .pass-card:hover .icon-circle { transform: rotateY(180deg); }
+
+        /* 配色 */
+        .card-euro .icon-circle { background: linear-gradient(135deg, #3b82f6, #2563eb); }
+        .card-arab .icon-circle { background: linear-gradient(135deg, #f59e0b, #d97706); }
+        .card-asia .icon-circle { background: linear-gradient(135deg, #ec4899, #db2777); }
+
+        /* === 底部干货说明 === */
+        .info-section {
+            max-width: 1000px; width: 90%; margin: 0 auto 2rem auto;
+        }
+        .info-card {
+            background: rgba(255, 255, 255, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.7);
+            border-radius: 16px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s;
+        }
+        .info-card:hover { background: rgba(255, 255, 255, 0.85); transform: translateY(-3px); border-color: white; }
+
+        /* === 底部 Dock 栏 === */
+        .dock-bar {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            border-radius: 24px;
+            padding: 0.8rem 2.5rem;
+            display: inline-flex; gap: 2.5rem;
+            margin: 0 auto 2rem auto;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+        }
+        .dock-item {
+            display: flex; flex-direction: column; align-items: center; gap: 4px;
+            cursor: pointer; color: #64748b; transition: all 0.3s;
+            min-width: 70px;
+        }
+        .dock-item:hover { color: #0f172a; transform: translateY(-4px); }
+        .dock-icon {
+            width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem;
+            transition: all 0.3s;
+        }
+        .dock-item:hover .dock-icon { transform: scale(1.1); }
+
+        /* 邮箱 */
+        .mail-float { position: fixed; bottom: 30px; right: 30px; z-index: 50; }
+        .mail-btn {
+            width: 50px; height: 50px; background: white; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1); transition: all 0.3s;
+            color: #64748b; font-size: 1.2rem; border: 1px solid #f1f5f9;
+        }
+        .mail-btn:hover { transform: scale(1.1); color: #2563eb; border-color: #2563eb; }
+        .mail-pop {
+            position: absolute; bottom: 60px; right: 0; background: #1e293b; color: white;
+            padding: 8px 12px; border-radius: 8px; font-size: 12px; opacity: 0;
+            transition: opacity 0.3s; pointer-events: none; white-space: nowrap;
+        }
+        .mail-btn:hover + .mail-pop { opacity: 1; }
+        
+        /* 打字机特效 */
+        .typing-container { display: inline-block; }
+        .typing-effect {
+            font-family: 'Courier New', Courier, monospace;
+            overflow: hidden; border-right: .15em solid #f59e0b; white-space: nowrap;
+            animation: typing 3s steps(30, end), blink-caret .75s step-end infinite;
+        }
+        @keyframes typing { from { width: 0 } to { width: 100% } }
+        @keyframes blink-caret { from, to { border-color: transparent } 50% { border-color: #f59e0b; } }
+    </style>
+</head>
+<body>
+
+    <div class="glass-overlay"></div>
+
+    <div class="content-layer">
+        
+        <nav class="nav-bar">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-md overflow-hidden">
+                    <img src="logo.png" class="w-full h-full object-cover" onerror="this.style.display='none'; this.parentNode.innerHTML='<i class=\'fa-solid fa-bolt text-slate-800\'></i>'">
+                </div>
+                <span class="font-black text-xl text-slate-800 tracking-widest">这语夯</span>
+            </div>
+            <div class="hidden md:block font-bold text-slate-500 opacity-60 text-sm">V32.0</div>
+        </nav>
+
+        <div class="text-center mt-8 mb-4">
+            <div class="typing-container">
+                <h1 class="text-4xl md:text-6xl font-black text-slate-900 mb-2 typing-effect">
+                    拒绝内卷 · 换个赛道
+                </h1>
+            </div>
+            <p class="text-lg text-slate-600 font-bold tracking-widest uppercase mt-2">
+                语言连接世界 · 机会就在脚下
+            </p>
+        </div>
+
+        <div class="card-container">
+            <div class="pass-card card-euro" onclick="window.location.href='euro.html'">
+                <div class="icon-circle"><i class="fa-solid fa-earth-europe"></i></div>
+                <h2 class="text-2xl font-black text-slate-800 mb-2">欧语视界</h2>
+                <p class="text-sm text-slate-500 mb-3">法 / 西 / 德 / 意</p>
+                <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-xs font-bold">教父 / 奢侈品 / 工业</span>
+            </div>
+            <div class="pass-card card-arab" onclick="window.location.href='arab.html'">
+                <div class="icon-circle"><i class="fa-solid fa-mosque"></i></div>
+                <h2 class="text-2xl font-black text-slate-800 mb-2">掘金中东</h2>
+                <p class="text-sm text-slate-500 mb-3">阿拉伯语 (Arabic)</p>
+                <span class="bg-amber-100 text-amber-700 px-3 py-1 rounded-full text-xs font-bold">石油 / 新能源 / 驻外高薪</span>
+            </div>
+            <div class="pass-card card-asia" onclick="window.location.href='asia.html'">
+                <div class="icon-circle"><i class="fa-solid fa-torii-gate"></i></div>
+                <h2 class="text-2xl font-black text-slate-800 mb-2">赛博亚洲</h2>
+                <p class="text-sm text-slate-500 mb-3">日韩 / 俄语 / 东南亚</p>
+                <span class="bg-pink-100 text-pink-700 px-3 py-1 rounded-full text-xs font-bold">二次元 / 电商 / 快乐老家</span>
+            </div>
+        </div>
+
+        <div class="info-section">
+            <div class="grid md:grid-cols-3 gap-4">
+                <div class="info-card group">
+                    <i class="fa-solid fa-sack-dollar text-2xl text-green-600 mb-2 group-hover:scale-110 transition"></i>
+                    <h4 class="font-bold text-slate-800">薪资降维打击</h4>
+                    <p class="text-xs text-slate-500 mt-1">国内月薪6k，驻外阿语/法语岗起薪20k+。三年买房不是梦。</p>
+                </div>
+                <div class="info-card group">
+                    <i class="fa-solid fa-chess-knight text-2xl text-purple-600 mb-2 group-hover:scale-110 transition"></i>
+                    <h4 class="font-bold text-slate-800">稀缺赛道</h4>
+                    <p class="text-xs text-slate-500 mt-1">英语卷成红海，小语种却是刚需。在细分领域，你就是专家。</p>
+                </div>
+                <div class="info-card group">
+                    <i class="fa-solid fa-compass text-2xl text-amber-600 mb-2 group-hover:scale-110 transition"></i>
+                    <h4 class="font-bold text-slate-800">国家战略风口</h4>
+                    <p class="text-xs text-slate-500 mt-1">跟着企业出海走。TikTok去印尼，华为去拉美，都需要你。</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-auto dock-bar">
+            <div class="dock-item" onclick="window.location.href='tools.html'">
+                <div class="dock-icon bg-green-100 text-green-600">
+                    <i class="fa-solid fa-toolbox"></i>
+                </div>
+                <span class="text-xs font-bold">学习军火库</span>
+            </div>
+
+            <div class="w-px bg-slate-400 h-8 self-center opacity-30"></div>
+
+            <div class="dock-item" onclick="alert('🚀 开发进度提示：\n\n核心功能已上线，开发者正在努力优化中。\n\n【未来规划】\n1. 校友匿名吐槽区 (建设中...)\n2. 前后辈经验交流 (Coming Soon)\n\n敬请期待！')">
+                <div class="dock-icon bg-indigo-100 text-indigo-600">
+                    <i class="fa-solid fa-layer-group"></i>
+                </div>
+                <span class="text-xs font-bold">更多功能</span>
+            </div>
+        </div>
+
+        <div class="mail-float">
+            <a href="mailto:lizhulangnb666@gmail.com" class="mail-btn">
+                <i class="fa-solid fa-envelope"></i>
+            </a>
+            <div class="mail-pop">lizhulangnb666@gmail.com</div>
+        </div>
+
+    </div>
+
+</body>
+</html>

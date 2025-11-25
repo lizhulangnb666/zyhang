@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEO-ASIA | 职业情报终端</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* === 核心升级：高级赛博背景 === */
+        body { 
+            font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif; 
+            color: #e2e8f0; 
+            overflow-x: hidden;
+            margin: 0;
+            
+            /* 1. 深邃底色 */
+            background-color: #020617; 
+            
+            /* 2. 顶部和底部的极光氛围光 (不再是死板的网格) */
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(34, 211, 238, 0.15) 0px, transparent 50%), 
+                radial-gradient(at 100% 100%, rgba(168, 85, 247, 0.15) 0px, transparent 50%);
+                
+            /* 3. 背景固定，不随滚动条移动，增加高级感 */
+            background-attachment: fixed;
+            background-size: cover;
+        }
+
+        /* === 侧边导航 (Cyber Sidebar) === */
+        .sidebar {
+            width: 80px;
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            background: rgba(5, 5, 5, 0.8); /* 半透明磨砂 */
+            border-right: 1px solid rgba(255,255,255,0.08);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 2rem;
+            z-index: 50;
+            backdrop-filter: blur(15px); /* 磨砂玻璃效果 */
+            transition: width 0.3s ease-in-out;
+        }
+        .sidebar:hover { width: 240px; background: rgba(5, 5, 5, 0.95); }
+
+        /* 导航按钮 */
+        .nav-item {
+            width: 100%;
+            padding: 1.2rem 0;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            position: relative;
+            color: #64748b;
+            transition: all 0.3s;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+        .nav-item i { 
+            min-width: 80px; 
+            text-align: center; 
+            font-size: 1.5rem; 
+            transition: color 0.3s;
+        }
+        .nav-text {
+            opacity: 0;
+            transform: translateX(-10px);
+            transition: all 0.3s;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+        .sidebar:hover .nav-text { opacity: 1; transform: translateX(0); }
+
+        /* 激活状态 */
+        .nav-item.active { background: rgba(255,255,255,0.03); border-left: 4px solid currentColor; }
+        .nav-item:hover { background: rgba(255,255,255,0.02); color: white; }
+
+        /* 颜色定义 */
+        .nav-jp.active { color: #f472b6; border-color: #f472b6; box-shadow: inset 15px 0 20px -10px rgba(244,114,182,0.2); }
+        .nav-kr.active { color: #60a5fa; border-color: #60a5fa; box-shadow: inset 15px 0 20px -10px rgba(96,165,250,0.2); }
+        .nav-ru.active { color: #ef4444; border-color: #ef4444; box-shadow: inset 15px 0 20px -10px rgba(239,68,68,0.2); }
+        .nav-sea.active { color: #34d399; border-color: #34d399; box-shadow: inset 15px 0 20px -10px rgba(52,211,153,0.2); }
+        .nav-more.active { color: #a855f7; border-color: #a855f7; }
+
+        /* === 主内容区 === */
+        .main-content {
+            margin-left: 80px;
+            padding: 2rem;
+            min-height: 100vh;
+            transition: margin-left 0.3s;
+        }
+
+        /* 顶部状态栏 */
+        .status-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 3rem;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding-bottom: 1rem;
+        }
+
+        /* 详情面板动画 */
+        .panel { display: none; animation: fadeIn 0.5s cubic-bezier(0.22, 1, 0.36, 1); }
+        .panel.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* 赛博卡片 (升级版) */
+        .cyber-card {
+            background: rgba(255, 255, 255, 0.03); /* 极度通透 */
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 12px;
+            padding: 1.5rem;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s;
+            backdrop-filter: blur(5px);
+        }
+        .cyber-card::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 3px; height: 100%;
+            background: var(--accent); opacity: 0.7;
+        }
+        .cyber-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.07);
+            border-color: var(--accent);
+            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5);
+        }
+
+        /* 狠话终端框 */
+        .terminal-box {
+            background: #050505;
+            border: 1px solid #262626;
+            border-radius: 12px;
+            padding: 1.5rem;
+            font-family: 'Courier New', Courier, monospace;
+            color: var(--accent);
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            position: relative;
+        }
+        .terminal-box::after { content: '_'; animation: blink 1s infinite; }
+        @keyframes blink { 50% { opacity: 0; } }
+
+        /* 移动端适配 */
+        @media (max-width: 768px) {
+            .sidebar { 
+                width: 100%; height: 65px; bottom: 0; top: auto; flex-direction: row; 
+                justify-content: space-around; padding-top: 0; border-right: none; 
+                border-top: 1px solid rgba(255,255,255,0.1); background: #050505;
+            }
+            .sidebar:hover { width: 100%; }
+            .nav-text { display: none; }
+            .nav-item { width: auto; border-left: none; border-bottom: 3px solid transparent; padding: 0; }
+            .nav-item.active { border-left: none; border-bottom-color: currentColor; background: transparent; }
+            .main-content { margin-left: 0; padding: 1rem 1rem 6rem 1rem; }
+            .status-bar { flex-direction: column; align-items: flex-start; gap: 1rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="sidebar">
+        <div class="mb-8 hidden md:block text-2xl text-white font-black tracking-tighter px-6 w-full overflow-hidden">
+            <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-500">NEO</span>
+        </div>
+
+        <div class="nav-item nav-jp active" onclick="switchTab('jp')">
+            <i class="fa-solid fa-torii-gate"></i><span class="nav-text">JAPAN 日语区</span>
+        </div>
+        <div class="nav-item nav-kr" onclick="switchTab('kr')">
+            <i class="fa-solid fa-music"></i><span class="nav-text">KOREA 韩语区</span>
+        </div>
+        <div class="nav-item nav-ru" onclick="switchTab('ru')">
+            <i class="fa-solid fa-snowflake"></i><span class="nav-text">RUSSIA 俄语区</span>
+        </div>
+        <div class="nav-item nav-sea" onclick="switchTab('sea')">
+            <i class="fa-solid fa-umbrella-beach"></i><span class="nav-text">ASEAN 东南亚</span>
+        </div>
+        <div class="nav-item nav-more" onclick="switchTab('more')">
+            <i class="fa-solid fa-circle-plus"></i><span class="nav-text">MORE 更多</span>
+        </div>
+        
+        <a href="index.html" class="nav-item mt-auto text-gray-500 hover:text-white">
+            <i class="fa-solid fa-power-off"></i><span class="nav-text">EXIT 系统登出</span>
+        </a>
+    </div>
+
+    <div class="main-content">
+        
+        <div class="status-bar">
+            <div>
+                <h1 class="text-2xl font-bold text-white tracking-widest">亚洲职业情报终端 <span class="text-cyan-500 text-xs align-top">v5.0</span></h1>
+                <p class="text-xs text-gray-500 mt-1">已连接至：大中华区及泛亚人才数据库</p>
+            </div>
+            <div class="text-right hidden md:block">
+                <div class="text-sm font-mono text-cyan-400" id="clock">00:00:00</div>
+                <div class="text-xs text-gray-600">SYSTEM ONLINE</div>
+            </div>
+        </div>
+
+        <div id="panel-jp" class="panel active" style="--accent: #f472b6; --glow: rgba(244,114,182,0.3);">
+            <div class="terminal-box">
+                > 正在解析日本职场数据...<br>
+                > 形势严峻，目前并不推荐。<br>
+                > 行业真相：呀灭跌不是全部。
+            </div>
+            <div class="grid lg:grid-cols-2 gap-8">
+                <div><h3 class="text-xl font-bold text-white mb-4 flex items-center gap-2"><i class="fa-solid fa-briefcase text-pink-500"></i> 核心株式会社</h3><div class="grid gap-4" id="list-jp-job"></div></div>
+                <div><h3 class="text-xl font-bold text-white mb-4 flex items-center gap-2"><i class="fa-solid fa-graduation-cap text-pink-500"></i> 圣地巡礼</h3><div class="grid gap-3" id="list-jp-uni"></div></div>
+            </div>
+        </div>
+
+        <div id="panel-kr" class="panel" style="--accent: #60a5fa; --glow: rgba(96,165,250,0.3);">
+            <div class="terminal-box">
+                > 正在解析韩国财阀网络...<br>
+                > 提示：k-pop含量 5%，半导体含量 95%。<br>
+                > 行业真相：会追到欧巴么。
+            </div>
+            <div class="grid lg:grid-cols-2 gap-8">
+                <div><h3 class="text-xl font-bold text-white mb-4 flex items-center gap-2"><i class="fa-solid fa-building text-blue-500"></i> 财阀帝国</h3><div class="grid gap-4" id="list-kr-job"></div></div>
+                <div><h3 class="text-xl font-bold text-white mb-4 flex items-center gap-2"><i class="fa-solid fa-school text-blue-500"></i> SKY天空联盟</h3><div class="grid gap-3" id="list-kr-uni"></div></div>
+            </div>
+        </div>
+
+        <div id="panel-ru" class="panel" style="--accent: #ef4444; --glow: rgba(239,68,68,0.3);">
+            <div class="terminal-box">
+                > 正在连接西伯利亚管线...<br>
+                > 警告：酒精浓度超标。<br>
+                > 行业真相：千万别说苏卡不列。
+            </div>
+            <div class="grid lg:grid-cols-2 gap-8">
+                <div><h3 class="text-xl font-bold text-white mb-4 flex items-center gap-2"><i class="fa-solid fa-gas-pump text-red-500"></i> 能源与贸易</h3><div class="grid gap-4" id="list-ru-job"></div></div>
+                <div><h3 class="text-xl font-bold text-white mb-4 flex items-center gap-2"><i class="fa-solid fa-star text-red-500"></i> 红色学府</h3><div class="grid gap-3" id="list-ru-uni"></div></div>
+            </div>
+        </div>
+
+        <div id="panel-sea" class="panel" style="--accent: #34d399; --glow: rgba(52,211,153,0.3);">
+            <div class="terminal-box">
+                > 正在扫描湄公河流域...<br>
+                > 覆盖：越南、泰国、印尼、柬埔寨、老挝。<br>
+                > 行业真相：不介绍灰产哈。。
+            </div>
+            <div class="grid lg:grid-cols-2 gap-8">
+                <div><h3 class="text-xl font-bold text-white mb-4 flex items-center gap-2"><i class="fa-solid fa-industry text-green-500"></i> 世界工厂分部</h3><div class="grid gap-4" id="list-sea-job"></div></div>
+                <div><h3 class="text-xl font-bold text-white mb-4 flex items-center gap-2"><i class="fa-solid fa-map-location-dot text-green-500"></i> 边疆重镇</h3><div class="grid gap-3" id="list-sea-uni"></div></div>
+            </div>
+        </div>
+
+        <div id="panel-more" class="panel">
+            <div class="flex flex-col items-center justify-center h-96 text-center">
+                <div class="text-8xl mb-6 animate-bounce">💀</div>
+                <h2 class="text-4xl font-bold text-purple-400 mb-4">未完待续...</h2>
+                <p class="text-gray-400 max-w-md mb-8">蒙古语 / 波斯语 / 乌尔都语 / 土耳其语</p>
+                <div class="bg-red-900/30 border border-red-500/30 p-4 rounded text-red-300 text-sm animate-pulse">
+                    ⚠️ 系统提示：作者要写死了，更多内容敬请期待...
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // === 实时时钟 ===
+        setInterval(() => {
+            const now = new Date();
+            document.getElementById('clock').innerText = now.toLocaleTimeString('en-US', { hour12: false });
+        }, 1000);
+
+        // === 数据源 ===
+        const db = {
+            'jp': {
+                jobs: [
+                    { name: '索尼 (Sony)', desc: '技术研发/市场 | 东京/上海', pay: '20k-40k', link: 'https://www.sony.com.cn/careers/' },
+                    { name: '任天堂', desc: '游戏本地化 | 京都', pay: '18k-35k', link: 'https://www.nintendo.co.jp/jobs/' },
+                    { name: '丰田 (Toyota)', desc: '精益制造管理 | 广州/天津', pay: '15k-30k', link: 'https://www.toyota.com.cn/' },
+                    { name: '米哈游', desc: '二次元游戏日本运营 | 上海', pay: '25k-50k', link: 'https://jobs.mihoyo.com/' },
+                    { name: '优衣库', desc: '店长候补/零售管理 | 全国', pay: '10k-20k', link: 'https://www.fastretailing.com/' },
+                    { name: '无印良品', desc: '企划/供应链 | 上海', pay: '12k-25k', link: 'https://careers.muji.com/' },
+                    { name: '野村综研', desc: 'IT咨询与开发 | 上海/大连', pay: '20k-40k', link: 'https://www.nri.com/cn' },
+                    { name: '松下', desc: '电子研发/行政 | 杭州/大连', pay: '15k-30k', link: 'https://panasonic.cn/' }
+                ],
+                unis: [
+                    { name: '大连外国语大学', tag: '东北王' }, // 重点推荐
+                    { name: '北京外国语大学', tag: '国内No.1' },
+                    { name: '上海外国语大学', tag: '魔都首选' },
+                    { name: '东京大学', tag: '亚洲第一·学术' },
+                    { name: '早稻田大学', tag: '政商名流·私立' },
+                    { name: '京都大学', tag: '诺奖摇篮·科研' },
+                    { name: '东北师范大学', tag: '师范强' },
+                    { name: '吉林大学', tag: '985' }
+                ]
+            },
+            'kr': {
+                jobs: [
+                    { name: '三星 (Samsung)', desc: '半导体/电子 | 西安/苏州', pay: '20k-40k', link: 'https://www.samsung.com/cn/careers/' },
+                    { name: 'SK海力士', desc: '存储芯片制造 | 无锡/大连', pay: '18k-35k', link: 'https://www.skhynix.com/' },
+                    { name: 'LG电子', desc: '家电/面板 | 南京/广州', pay: '15k-30k', link: 'https://www.lg.com/cn' },
+                    { name: '爱茉莉太平洋', desc: '美妆市场(雪花秀) | 上海', pay: '15k-30k', link: 'https://www.apgroup.com/' },
+                    { name: '现代汽车', desc: '合资车企 | 北京', pay: '15k-28k', link: 'https://www.hyundai.com.cn/' },
+                    { name: 'Smilegate', desc: 'CF开发商/游戏运营', pay: '20k-40k', link: 'https://www.smilegate.com/' },
+                    { name: '大连外国语大学', desc: '韩语教职/行政 | 大连', pay: '稳定', link: 'https://www.dlufl.edu.cn/' }
+                ],
+                unis: [
+                    { name: '大连外国语大学', tag: '全村希望' }, // 重点推荐
+                    { name: '北京大学', tag: 'Top2' },
+                    { name: '青岛大学', tag: '韩企资源多' },
+                    { name: '首尔大学 (SNU)', tag: 'SKY之首' },
+                    { name: '高丽大学 (KU)', tag: '民族大学' },
+                    { name: '延世大学', tag: '贵族私立' },
+                    { name: '延边大学', tag: '211/地缘' }
+                ]
+            },
+            'ru': {
+                jobs: [
+                    { name: '中石油 (CNPC)', desc: '能源驻外 | 莫斯科/中亚', pay: '30k-60k', link: 'http://www.cnpc.com.cn/' },
+                    { name: '阿里巴巴', desc: 'AliExpress Russia | 莫斯科', pay: '30k-60k', link: 'https://careers.alibaba.com/' },
+                    { name: '长城汽车', desc: '图拉工厂驻外 | 俄罗斯', pay: '20k-40k', link: 'https://www.gwm.com.cn/' },
+                    { name: 'Ozon', desc: '俄版亚马逊招商 | 深圳', pay: '20k-45k', link: 'https://www.ozon.ru/' },
+                    { name: '华为 (欧亚)', desc: '圣彼得堡研究所', pay: '25k-50k', link: 'https://career.huawei.com/' },
+                    { name: '吉利汽车', desc: '白俄罗斯工厂', pay: '18k-35k', link: 'http://zhaopin.geely.com/' },
+                    { name: '安东石油', desc: '油服 | 哈萨克斯坦', pay: '20k-40k', link: 'https://www.antonoil.com/' },
+                    { name: '中外运', desc: '中欧班列物流', pay: '15k-25k', link: 'https://www.sinotrans.com/' }
+                ],
+                unis: [
+                    { name: '大连外国语大学', tag: '东北王' }, // 重点推荐
+                    { name: '黑龙江大学', tag: '全国A+' },
+                    { name: '北京师范大学', tag: '985名校' },
+                    { name: '莫斯科国立大学', tag: '俄罗斯第一' },
+                    { name: '圣彼得堡国立', tag: '普京母校' },
+                    { name: '新疆大学', tag: '中亚强' },
+                    { name: '西安外国语', tag: '丝路' }
+                ]
+            },
+            'sea': {
+                jobs: [
+                    { name: 'TikTok (印尼)', desc: '直播带货运营 | 雅加达', pay: '25k-50k', link: 'https://jobs.bytedance.com/' },
+                    { name: '立讯精密 (越南)', desc: '苹果供应链 | 北宁', pay: '18k-35k', link: 'https://www.luxshare-ict.com/' },
+                    { name: '申洲国际 (柬)', desc: '纺织厂管理 | 金边', pay: '15k-30k', link: 'http://www.shenzhougroup.com/' },
+                    { name: '极兔速递', desc: '物流管理 | 印尼/泰国', pay: '20k-40k', link: 'https://www.jtexpress.com.cn/' },
+                    { name: '磨万铁路 (老挝)', desc: '铁路运维翻译', pay: '15k-25k', link: 'https://www.crcc.cn/' },
+                    { name: '上汽正大 (泰)', desc: '名爵汽车制造 | 罗勇府', pay: '20k-35k', link: 'https://www.saicmotor.com/' },
+                    { name: 'Shopee', desc: '东南亚电商霸主', pay: '20k-45k', link: 'https://careers.shopee.cn/' },
+                    { name: '蜜雪冰城', desc: '门店拓展 | 越南/印尼', pay: '15k-30k', link: 'https://www.mxbc.com/' },
+                    { name: '雅迪电动车', desc: '越南海防工业区', pay: '15k-28k', link: 'https://www.yadea.com.cn/' }
+                ],
+                unis: [
+                    { name: '大连外国语大学', tag: '全能王' }, // 重点推荐
+                    { name: '广西民族大学', tag: '东盟核心' },
+                    { name: '云南民族大学', tag: '泰/越/老' },
+                    { name: '朱拉隆功大学', tag: '泰国北大' },
+                    { name: '越南河内国家大学', tag: '越南第一' },
+                    { name: '印度尼西亚大学', tag: 'UI' }
+                ]
+            }
+        };
+
+        // 渲染逻辑
+        function switchTab(lang) {
+            // 1. 视觉激活
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+            document.querySelector(`.nav-${lang}`).classList.add('active');
+
+            // 2. 显示对应面板
+            document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+            document.getElementById('panel-' + lang).classList.add('active');
+
+            if (lang === 'more') return;
+
+            // 3. 渲染数据 (动态生成 HTML)
+            const d = db[lang];
+            const jobContainer = document.getElementById(`list-${lang}-job`);
+            const uniContainer = document.getElementById(`list-${lang}-uni`);
+
+            // 清空旧内容 (防止重复渲染)
+            jobContainer.innerHTML = '';
+            uniContainer.innerHTML = '';
+
+            // 渲染 Job
+            jobContainer.innerHTML = d.jobs.map(j => `
+                <div class="cyber-card group">
+                    <div class="flex justify-between items-start mb-2">
+                        <h4 class="text-white font-bold text-lg group-hover:text-[var(--accent)] transition">${j.name}</h4>
+                        <a href="${j.link}" target="_blank" class="text-xs border border-gray-600 text-gray-400 px-2 py-1 rounded hover:border-[var(--accent)] hover:text-[var(--accent)] transition">申请 &rarr;</a>
+                    </div>
+                    <p class="text-sm text-gray-500 mb-3 line-clamp-1">${j.desc}</p>
+                    <div class="flex justify-between items-center pt-3 border-t border-gray-800">
+                        <span class="text-xs text-gray-600">月薪(含津贴)</span>
+                        <span class="font-mono font-bold text-lg" style="color: var(--accent)">${j.pay}</span>
+                    </div>
+                </div>
+            `).join('');
+
+            // 渲染 Uni
+            uniContainer.innerHTML = d.unis.map(u => `
+                <div class="uni-pill border-l-4" style="border-color: var(--accent)">
+                    <div class="text-gray-300 font-bold">${u.name}</div>
+                    <div class="text-xs text-gray-500 bg-black px-2 py-1 rounded border border-gray-800">${u.tag}</div>
+                </div>
+            `).join('');
+        }
+
+        // 初始化默认显示日语
+        document.addEventListener('DOMContentLoaded', () => {
+            switchTab('jp');
+        });
+    </script>
+</body>
+</html>

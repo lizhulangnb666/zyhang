@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>掘金中东 | 70+名企外派指南</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif; background-color: #f8fafc; }
+        
+        /* 背景 */
+        .arab-hero-bg { 
+            background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
+            position: relative; overflow: hidden; color: white;
+            border-bottom: 4px solid #d97706;
+        }
+
+        /* 卡片交互 */
+        .hover-card { 
+            transition: all 0.3s; cursor: pointer; border: 1px solid #f1f5f9; background: white;
+        }
+        .hover-card:hover { 
+            transform: translateY(-5px); box-shadow: 0 15px 30px rgba(0,0,0,0.08); border-color: #fbbf24; z-index: 10;
+        }
+
+        /* 折叠/展开动画 */
+        .hidden-list { 
+            display: none; 
+        }
+        .hidden-list.show { 
+            display: grid; 
+            animation: expandList 0.5s ease-out forwards; 
+        }
+        @keyframes expandList {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* 展开按钮样式 */
+        .expand-btn {
+            width: 100%;
+            border: 2px dashed #cbd5e1;
+            color: #64748b;
+            padding: 1rem;
+            border-radius: 0.75rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 1rem;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+        .expand-btn:hover {
+            border-color: #d97706;
+            color: #d97706;
+            background-color: #fffbeb;
+        }
+
+        /* 模态框 */
+        #company-modal { 
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: rgba(0,0,0,0.8); backdrop-filter: blur(5px); 
+            z-index: 100; justify-content: center; align-items: center; 
+            opacity: 0; transition: opacity 0.3s;
+        }
+        #company-modal.show { display: flex; opacity: 1; }
+        .modal-content { background: white; width: 95%; max-width: 600px; max-height: 90vh; overflow-y: auto; border-radius: 16px; transform: scale(0.95); transition: transform 0.2s; }
+        #company-modal.show .modal-content { transform: scale(1); }
+        
+        /* 体制内边框 */
+        .gov-card { border-left: 4px solid #b91c1c; }
+        .edu-card { border-left: 4px solid #0f766e; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 pb-20 relative">
+
+    <nav class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 h-16 flex justify-between items-center">
+            <a href="index.html" class="flex items-center gap-2 text-gray-600 hover:text-amber-600 transition">
+                <i class="fa-solid fa-arrow-left"></i> <span class="font-bold">返回主页</span>
+            </a>
+            <div class="font-bold text-lg text-slate-800">阿语人· 职业全景</div>
+        </div>
+    </nav>
+
+    <header class="arab-hero-bg py-20 px-4 relative">
+        <div class="max-w-5xl mx-auto text-center relative z-10">
+            <div class="flex justify-center gap-3 mb-6">
+                <span class="bg-white/10 px-3 py-1 rounded-full text-xs border border-white/20">🇺🇳 联合国六大语言</span>
+                <span class="bg-white/10 px-3 py-1 rounded-full text-xs border border-white/20">🌍 22个阿拉伯国家</span>
+            </div>
+            <h1 class="text-4xl md:text-6xl font-extrabold mb-8 leading-tight">
+                掌握<span class="text-amber-500">上帝的语言</span><br>
+                拿到通往财富的钥匙
+            </h1>
+            <div class="inline-block bg-red-500 text-white transform -rotate-2 shadow-[4px_4px_0px_#7f1d1d] px-6 py-3 rounded-lg text-lg md:text-xl font-bold mb-10 animate-bounce">
+                ⚠️ 行业真理：男生只要能毕业，就能挣到钱！
+            </div>
+            <p class="text-slate-400 max-w-2xl mx-auto text-sm md:text-base leading-relaxed mb-8">
+                阿拉伯语构建了天然的竞争壁垒。无论是<strong>国家部委</strong>的铁饭碗，还是<strong>中东外派</strong>的高薪金饭碗，阿语人永远是稀缺资源。
+            </p>
+            <div class="flex flex-col md:flex-row justify-center gap-4">
+                <a href="#main-container" class="inline-flex items-center justify-center gap-2 bg-amber-600 text-white px-8 py-3 rounded-full font-bold shadow-lg hover:bg-amber-700 transition">
+                    <i class="fa-solid fa-briefcase"></i> 查看70+名企库
+                </a>
+                <a href="arab-study.html" class="inline-flex items-center justify-center gap-2 bg-white text-slate-800 border border-slate-200 px-8 py-3 rounded-full font-bold shadow-sm hover:bg-slate-50 transition">
+                    <i class="fa-solid fa-graduation-cap"></i> 院校报考指南
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <section class="max-w-7xl mx-auto px-4 py-16 border-b border-slate-200 bg-white">
+        <div class="flex items-center gap-3 mb-8">
+            <div class="w-10 h-10 bg-red-100 rounded-lg flex items-center justify-center text-red-700 text-xl"><i class="fa-solid fa-building-columns"></i></div>
+            <h2 class="text-2xl font-bold text-slate-900">不想出国？体制内铁饭碗</h2>
+        </div>
+        <div class="grid md:grid-cols-3 gap-6">
+            <div class="hover-card gov-card p-6 rounded-xl" onclick="openGovModal('gwy')">
+                <div class="flex justify-between items-center mb-4"><h3 class="font-bold text-lg">国家公务员</h3><span class="text-xs bg-red-100 text-red-700 px-2 py-1 rounded">光宗耀祖</span></div>
+                <p class="text-sm text-slate-500 mb-4 line-clamp-3">外交部、商务部。阿语专业的最高殿堂，拥有外交官护照。</p>
+                <div class="text-xs text-slate-400 flex items-center gap-1"><i class="fa-solid fa-link"></i> 点击获取报名链接</div>
+            </div>
+            <div class="hover-card gov-card p-6 rounded-xl" onclick="openGovModal('customs')">
+                <div class="flex justify-between items-center mb-4"><h3 class="font-bold text-lg">边检警察</h3><span class="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded">高薪制服</span></div>
+                <p class="text-sm text-slate-500 mb-4 line-clamp-3">北上广深出入境边检。公务员高薪第一梯队。</p>
+                <div class="text-xs text-slate-400 flex items-center gap-1"><i class="fa-solid fa-link"></i> 点击获取官网链接</div>
+            </div>
+            <div class="hover-card edu-card p-6 rounded-xl" onclick="openGovModal('edu')">
+                <div class="flex justify-between items-center mb-4"><h3 class="font-bold text-lg">高校 / 智库</h3><span class="text-xs bg-green-100 text-green-700 px-2 py-1 rounded">超长假期</span></div>
+                <p class="text-sm text-slate-500 mb-4 line-clamp-3">北外、上外、北大等高校。适合高学历人才。</p>
+                <div class="text-xs text-slate-400 flex items-center gap-1"><i class="fa-solid fa-link"></i> 点击查看人才网</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="max-w-7xl mx-auto px-4 py-16" id="main-container">
+        <div class="text-center mb-12">
+            <span class="text-amber-600 font-bold tracking-wider text-sm">EXPAT OPPORTUNITIES</span>
+            <h2 class="text-3xl md:text-4xl font-extrabold text-slate-900 mt-2">70+ 中国名企 <span class="text-amber-500">外派黄页</span></h2>
+            <p class="text-slate-500 mt-4">已为您整理所有高薪企业，点击分类下方按钮展开全部</p>
+        </div>
+        
+        <div id="enterprise-list"></div>
+    </section>
+
+    <div id="company-modal" onclick="closeModal(event)">
+        <div class="modal-content relative" onclick="event.stopPropagation()">
+            <button onclick="closeModal()" class="absolute top-4 right-4 w-8 h-8 bg-slate-100 rounded-full flex items-center justify-center hover:bg-slate-200 z-10 text-slate-500">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <div id="modal-body"></div>
+        </div>
+    </div>
+
+    <div class="fixed bottom-6 right-6 z-50 flex items-center gap-2 group">
+        <div class="bg-gray-800 text-white text-xs py-1.5 px-3 rounded shadow-lg opacity-0 group-hover:opacity-100 transition duration-300 transform translate-x-2 group-hover:translate-x-0 pointer-events-none">
+            反馈邮箱: lizhulangnb666@gmail.com
+        </div>
+        <a href="mailto:lizhulangnb666@gmail.com" class="w-12 h-12 bg-white border-2 border-gray-100 rounded-full flex items-center justify-center text-gray-500 hover:bg-amber-500 hover:text-white hover:border-amber-500 transition-all duration-300 shadow-lg hover:shadow-xl hover:-translate-y-1">
+            <i class="fa-solid fa-envelope text-lg"></i>
+        </a>
+    </div>
+
+    <script>
+        // 公职数据
+        const govJobs = {
+            'gwy': { title: '国家公务员', desc: '外交部阿语高翻、商务部西亚非洲司、中联部等。', req: '党员优先，专四/专八优秀。', link: 'http://bm.scs.gov.cn/pp/gkweb/core/web/ui/business/home/gkhome.html', btnText: '访问国家公务员局' },
+            'customs': { title: '边检与移民局警察', desc: '北上广深出入境边检。待遇优厚。', req: '身体素质好，视力达标。', link: 'http://www.nia.gov.cn/', btnText: '访问国家移民管理局' },
+            'edu': { title: '高校教师 & 智库', desc: '全国开设阿语专业高校超50所。', req: '硕士或博士学历。', link: 'https://www.gaoxiaojob.com/', btnText: '访问高校人才网' }
+        };
+
+        // 70+家企业数据
+        const categories = [
+            {
+                id: 'tech', title: '科技 / 互联网 / 游戏 / 支付', icon: 'fa-wifi', color: 'bg-blue-600',
+                companies: [
+                    { name: '华为 (Huawei)', tags: ['通信', '高薪'], loc: '全中东', salary: '30k-70k', link: 'https://career.huawei.com/' },
+                    { name: '字节跳动 (TikTok)', tags: ['社交', '氛围'], loc: '迪拜/开罗', salary: '25k-50k', link: 'https://jobs.bytedance.com/' },
+                    { name: '腾讯游戏', tags: ['PUBG', '运营'], loc: '迪拜', salary: '30k-60k', link: 'https://careers.tencent.com/' },
+                    { name: 'Yalla Group', tags: ['中东小腾讯'], loc: '迪拜', salary: '20k-40k', link: 'https://www.yallatech.ae/' },
+                    { name: '中兴通讯 (ZTE)', tags: ['国企', '通信'], loc: '全中东', salary: '20k-45k', link: 'https://job.zte.com.cn/' },
+                    { name: '海康威视', tags: ['安防', '销售'], loc: '全中东', salary: '20k-40k', link: 'https://campushr.hikvision.com/' },
+                    // 以下为默认折叠
+                    { name: '大华股份', tags: ['安防'], loc: '全中东', salary: '18k-35k', link: 'https://dahuatech.zhiye.com/' },
+                    { name: 'BIGO', tags: ['直播'], loc: '迪拜/土耳其', salary: '20k-40k', link: 'https://www.bigo.sg/' },
+                    { name: 'ONEMT (龙腾简合)', tags: ['手游霸主'], loc: '迪拜', salary: '15k-30k', link: 'http://www.onemt.com/' },
+                    { name: '沐瞳科技', tags: ['MLBB', '电竞'], loc: '沙特', salary: '20k-45k', link: 'https://www.moonton.com/' },
+                    { name: 'Elex (智明星通)', tags: ['游戏出海'], loc: '中东', salary: '18k-35k', link: 'http://www.elex.com/' },
+                    { name: '网龙网络', tags: ['教育科技'], loc: '埃及', salary: '18k-30k', link: 'http://www.nd.com.cn/' },
+                    { name: '传音控股', tags: ['手机'], loc: '北非/伊拉克', salary: '18k-35k', link: 'https://www.transsion.com/' },
+                    { name: '小米 (Xiaomi)', tags: ['IoT'], loc: '迪拜', salary: '20k-40k', link: 'https://hr.xiaomi.com/' },
+                    { name: 'OPPO', tags: ['手机'], loc: '开罗', salary: '18k-35k', link: 'https://careers.oppo.com/' },
+                    { name: 'vivo', tags: ['手机'], loc: '利雅得', salary: '18k-35k', link: 'https://hr.vivo.com/' },
+                    { name: 'TP-Link', tags: ['网络设备'], loc: '迪拜', salary: '15k-30k', link: 'https://www.tp-link.com/cn/career/' },
+                    { name: 'PayerMax', tags: ['支付'], loc: '利雅得/迪拜', salary: '25k-45k', link: 'https://www.payermax.com/' },
+                    { name: 'PingPong', tags: ['跨境支付'], loc: '迪拜', salary: '20k-40k', link: 'https://www.pingpongx.com/' }
+                ]
+            },
+            {
+                id: 'infra', title: '大国基建 / 工程 / 机械', icon: 'fa-hard-hat', color: 'bg-red-700',
+                companies: [
+                    { name: '中建中东', tags: ['包吃住', '铁饭碗'], loc: '阿联酋', salary: '18k-30k', link: 'https://www.cscec.com/' },
+                    { name: '中国铁建 (CRCC)', tags: ['轻轨'], loc: '沙特', salary: '20k-35k', link: 'https://www.crcc.cn/' },
+                    { name: '中国交建', tags: ['港口'], loc: '沿海', salary: '18k-32k', link: 'https://www.ccccltd.cn/' },
+                    { name: '中国电建', tags: ['水电'], loc: '沙特', salary: '18k-35k', link: 'https://www.powerchina.cn/' },
+                    { name: '山东电建三公司', tags: ['电站'], loc: '沙特/迪拜', salary: '20k-35k', link: 'http://www.sepco3.com/' },
+                    { name: '中国化学 (CNCEC)', tags: ['化工工程'], loc: '沙特/阿联酋', salary: '18k-30k', link: 'https://www.cncec.com.cn/' },
+                    // 折叠
+                    { name: '三一重工', tags: ['机械'], loc: '沙特', salary: '20k-50k', link: 'https://sanygroup.com/' },
+                    { name: '徐工集团', tags: ['重工'], loc: '全中东', salary: '18k-40k', link: 'http://www.xcmg.com/' },
+                    { name: '中联重科', tags: ['机械'], loc: '海湾六国', salary: '18k-35k', link: 'https://www.zoomlion.com/' },
+                    { name: '中设集团 (CMEC)', tags: ['总包'], loc: '伊拉克', salary: '18k-35k', link: 'https://www.cmec.com/' },
+                    { name: '葛洲坝集团', tags: ['水利'], loc: '科威特', salary: '18k-30k', link: 'http://www.cggc.cn/' },
+                    { name: '北方工业', tags: ['军工/石油'], loc: '伊拉克', salary: '25k-50k', link: 'http://www.norinco.com/' },
+                    { name: '中航国际', tags: ['航空/工程'], loc: '阿联酋', salary: '20k-40k', link: 'https://www.avic.com/' },
+                    { name: '柳工 (LiuGong)', tags: ['机械'], loc: '北非', salary: '15k-30k', link: 'https://www.liugong.com/' }
+                ]
+            },
+            {
+                id: 'oil', title: '石油 / 化工 / 能源', icon: 'fa-oil-well', color: 'bg-amber-600',
+                companies: [
+                    { name: '中石油 (CNPC)', tags: ['超高津贴'], loc: '伊拉克/阿曼', salary: '30k-60k', link: 'http://www.cnpc.com.cn/' },
+                    { name: '中石化', tags: ['炼化'], loc: '沙特', salary: '25k-50k', link: 'http://www.sinopec.com/' },
+                    { name: '中海油', tags: ['海油'], loc: '阿联酋', salary: '25k-50k', link: 'https://www.cnooc.com.cn/' },
+                    { name: '中油工程 (CPECC)', tags: ['建设'], loc: '油田', salary: '20k-40k', link: 'http://cpecc.cnpc.com.cn/' },
+                    { name: '安东石油', tags: ['油服'], loc: '伊拉克', salary: '20k-40k', link: 'https://www.antonoil.com/' },
+                    { name: '杰瑞股份', tags: ['装备'], loc: '阿联酋', salary: '18k-35k', link: 'https://www.jereh.com/' },
+                    // 折叠
+                    { name: '科瑞石油', tags: ['设备'], loc: '沙特', salary: '15k-30k', link: 'http://www.keruigroup.com/' },
+                    { name: '中曼石油', tags: ['钻井'], loc: '伊拉克', salary: '18k-35k', link: 'http://www.zpec.com/' },
+                    { name: '海隆控股', tags: ['涂层'], loc: '全中东', salary: '15k-30k', link: 'http://www.hilonggroup.com/' },
+                    { name: '惠生工程', tags: ['化工EPC'], loc: '沙特', salary: '20k-40k', link: 'http://www.wison.com/' },
+                    { name: '贝克休斯(中国)', tags: ['外企'], loc: '中东', salary: '25k-50k', link: '#' }
+                ]
+            },
+            {
+                id: 'green', title: '新能源 / 光伏 (风口)', icon: 'fa-solar-panel', color: 'bg-green-600',
+                companies: [
+                    { name: '隆基绿能', tags: ['光伏龙头'], loc: '沙特', salary: '20k-45k', link: 'https://careers.longi.com/' },
+                    { name: '晶科能源', tags: ['组件'], loc: '全中东', salary: '20k-40k', link: 'https://www.jinkosolar.com/' },
+                    { name: '阳光电源', tags: ['储能'], loc: '红海', salary: '20k-40k', link: 'https://www.sungrowpower.com/' },
+                    { name: '天合光能', tags: ['方案'], loc: '迪拜', salary: '18k-35k', link: 'https://www.trinasolar.com/' },
+                    { name: '中信博 (Arctech)', tags: ['支架'], loc: '沙特', salary: '18k-35k', link: 'https://www.arctechsolar.cn/' },
+                    { name: '晶澳科技', tags: ['老牌光伏'], loc: '中东', salary: '18k-35k', link: 'https://www.jasolar.com/' },
+                    // 折叠
+                    { name: '金风科技', tags: ['风电'], loc: '北非', salary: '18k-35k', link: 'https://www.goldwind.com/' },
+                    { name: '上海电气', tags: ['光热'], loc: '迪拜', salary: '20k-35k', link: 'https://www.shanghai-electric.com/' },
+                    { name: '特变电工', tags: ['输变电'], loc: '埃及', salary: '18k-30k', link: 'https://www.tbea.com/' },
+                    { name: '正泰电器', tags: ['低压'], loc: '沙特', salary: '15k-30k', link: 'https://www.chint.com/' },
+                    { name: '协鑫 (GCL)', tags: ['新能源'], loc: '中东', salary: '18k-35k', link: 'http://www.gcl-power.com/' },
+                    { name: '东方日升', tags: ['组件'], loc: '迪拜', salary: '18k-35k', link: 'https://www.risenenergy.com/' }
+                ]
+            },
+            {
+                id: 'auto', title: '汽车 / 物流 / 贸易', icon: 'fa-car', color: 'bg-indigo-600',
+                companies: [
+                    { name: '奇瑞汽车', tags: ['销量高'], loc: '沙特', salary: '18k-35k', link: 'https://www.chery.cn/' },
+                    { name: '长城汽车', tags: ['皮卡'], loc: '全中东', salary: '18k-35k', link: 'https://www.gwm.com.cn/' },
+                    { name: '比亚迪 (BYD)', tags: ['新能源'], loc: '中东', salary: '20k-40k', link: 'https://job.byd.com/' },
+                    { name: '极兔速递', tags: ['物流'], loc: '沙特', salary: '15k-30k', link: 'https://www.jtexpress.com.cn/' },
+                    { name: 'iMile', tags: ['跨境'], loc: '迪拜', salary: '18k-35k', link: 'https://www.imile.com/' },
+                    { name: 'SHEIN', tags: ['电商'], loc: '中东', salary: '20k-45k', link: 'https://www.sheingroup.com/' },
+                    // 折叠
+                    { name: '吉利汽车', tags: ['品牌'], loc: '迪拜', salary: '18k-35k', link: 'http://zhaopin.geely.com/' },
+                    { name: '上汽名爵', tags: ['市占率'], loc: '中东', salary: '18k-35k', link: 'https://www.saicmotor.com/' },
+                    { name: '长安汽车', tags: ['国企'], loc: '沙特', salary: '18k-30k', link: 'https://www.changan.com.cn/' },
+                    { name: '红旗 (一汽)', tags: ['高端'], loc: '沙特/迪拜', salary: '18k-35k', link: 'http://www.faw.com.cn/' },
+                    { name: '江淮汽车', tags: ['商用车'], loc: '北非', salary: '15k-30k', link: 'https://www.jac.com.cn/' },
+                    { name: '中国重汽', tags: ['重卡'], loc: '全中东', salary: '18k-35k', link: 'http://www.sinotruk.com/' },
+                    { name: '宇通客车', tags: ['大巴'], loc: '卡塔尔', salary: '18k-35k', link: 'https://www.yutong.com/' },
+                    { name: '菜鸟网络', tags: ['物流'], loc: '迪拜枢纽', salary: '20k-40k', link: 'https://www.cainiao.com/' }
+                ]
+            }
+        ];
+
+        // 渲染逻辑：只显示前6个，其他的放入隐藏层
+        function renderPage() {
+            const container = document.getElementById('enterprise-list');
+            let html = '';
+
+            categories.forEach((cat, index) => {
+                const visible = cat.companies.slice(0, 6);
+                const hidden = cat.companies.slice(6);
+                const hasMore = hidden.length > 0;
+                const hiddenId = `more-list-${index}`;
+
+                html += `
+                    <div class="mb-12">
+                        <div class="flex items-center gap-3 mb-6 pb-2 border-b border-slate-200">
+                            <div class="w-10 h-10 rounded-xl flex items-center justify-center text-white text-lg shadow-md ${cat.color}">
+                                <i class="fa-solid ${cat.icon}"></i>
+                            </div>
+                            <h3 class="text-2xl font-bold text-slate-800">${cat.title}</h3>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                            ${visible.map(comp => createCardHTML(comp, cat.color)).join('')}
+                        </div>
+
+                        <div id="${hiddenId}" class="hidden-list grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mt-4">
+                            ${hidden.map(comp => createCardHTML(comp, cat.color)).join('')}
+                        </div>
+
+                        ${hasMore ? `
+                            <div onclick="toggleList('${hiddenId}', this)" class="expand-btn">
+                                <i class="fa-solid fa-plus-circle mr-1"></i> 查看更多 ${cat.title} 企业 (${hidden.length})
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+        }
+
+        function createCardHTML(comp, colorClass) {
+            return `
+                <div class="hover-card bg-white p-5 rounded-xl group flex flex-col justify-between h-full" onclick="openCompModal('${comp.name}', '${comp.salary}', '${comp.link}', '${comp.tags}', '${comp.loc}', '${colorClass}')">
+                    <div>
+                        <div class="flex justify-between items-start mb-3">
+                            <div class="font-bold text-slate-800 text-lg truncate pr-2">${comp.name}</div>
+                            <i class="fa-solid fa-arrow-up-right-from-square text-slate-300 group-hover:text-amber-500 transition text-xs"></i>
+                        </div>
+                        <div class="flex flex-wrap gap-1.5 mb-3">
+                            ${comp.tags.map(tag => `<span class="bg-slate-100 text-slate-500 text-[10px] px-2 py-1 rounded font-medium">${tag}</span>`).join('')}
+                        </div>
+                        <div class="flex items-center text-xs text-slate-400 gap-1.5 mb-2">
+                            <i class="fa-solid fa-location-dot text-slate-300"></i> ${comp.loc}
+                        </div>
+                    </div>
+                    <div class="pt-3 border-t border-slate-100 mt-2 flex justify-between items-center">
+                         <span class="text-xs font-bold text-amber-600 bg-amber-50 px-2 py-1 rounded">💰 ${comp.salary}</span>
+                    </div>
+                </div>
+            `;
+        }
+
+        // 展开功能
+        function toggleList(id, btn) {
+            const el = document.getElementById(id);
+            el.classList.add('show');
+            btn.style.display = 'none'; // 展开后隐藏按钮
+        }
+
+        // 弹窗功能
+        function openGovModal(id) { const d=govJobs[id]; document.getElementById('modal-body').innerHTML=`<div class="bg-red-900 text-white p-6 rounded-t-xl"><h2 class="text-2xl font-bold">${d.title}</h2></div><div class="p-6"><p class="text-slate-600 mb-4 font-bold">${d.desc}</p><div class="bg-slate-50 p-4 rounded mb-6 text-sm text-slate-500 border border-slate-200">${d.req}</div><a href="${d.link}" target="_blank" class="block w-full bg-red-700 text-white text-center py-3 rounded-lg font-bold">${d.btnText}</a></div>`; document.getElementById('company-modal').classList.add('show'); }
+        function openCompModal(n,s,l,t,loc,c) { document.getElementById('modal-body').innerHTML=`<div class="h-28 ${c} w-full flex items-center justify-center rounded-t-xl relative overflow-hidden"><div class="absolute inset-0 bg-black/10"></div><h2 class="text-2xl font-bold text-white z-10 text-center px-4">${n}</h2></div><div class="p-6"><div class="flex flex-wrap gap-2 mb-6"><span class="bg-amber-50 text-amber-700 px-3 py-1 rounded-full text-xs font-bold"><i class="fa-solid fa-location-dot mr-1"></i> ${loc}</span></div><p class="text-slate-600 text-sm leading-relaxed mb-6">长期招聘岗位：阿语翻译、商务拓展、运营、财务。地点：${loc}。</p><div class="mb-8 bg-slate-50 p-5 rounded-xl border border-slate-100 flex justify-between items-center"><div><div class="text-xs text-slate-400 mb-1">参考月薪</div><div class="text-3xl font-black text-amber-600">${s}</div></div></div><a href="${l}" target="_blank" class="block w-full ${c} text-white text-center py-4 rounded-xl font-bold">直达招聘官网</a></div>`; document.getElementById('company-modal').classList.add('show'); }
+        function closeModal() { document.getElementById('company-modal').classList.remove('show'); }
+        
+        renderPage();
+    </script>
+</body>
+</html>
