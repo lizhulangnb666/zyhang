@@ -59,7 +59,7 @@
             --waline-info-color: #94a3b8;
         }
         
-        /* 隐藏 Waline 版权信息 (可选) */
+        /* 隐藏 Waline 版权信息 (更清爽) */
         .wl-power { display: none !important; }
     </style>
 </head>
@@ -77,9 +77,8 @@
             <div class="text-5xl mb-4">🎭</div>
             <h1 class="text-3xl font-bold text-white mb-3">校友匿名吐槽区</h1>
             <p class="text-slate-400 text-sm leading-relaxed">
-                这里是法外之地（划掉），这里是自由交流区。<br>
                 分享你的外派血泪史、避坑指南，或者单纯发泄一下。<br>
-                <span class="text-red-400 text-xs mt-2 block font-bold">*温馨提示：第一位注册登录的用户将自动成为管理员！</span>
+                <span class="text-gray-500 text-xs mt-2 block">（注：注册时“个人网站”一栏可不填，直接跳过即可）</span>
             </p>
         </div>
 
@@ -88,7 +87,7 @@
     </div>
 
     <footer class="text-center text-slate-600 text-xs py-6 border-t border-slate-800">
-        © 2025 这语夯 | 评论数据由 Zeabur 云端托管
+        © 2025 这语夯 | 评论数据永久保存
     </footer>
 
     <script type="module">
@@ -97,7 +96,7 @@
         init({
             el: '#waline',
             
-            // 👇 已经帮你填好了你的专属地址！
+            // 你的专属服务器地址
             serverURL: 'https://zheyuhang.zeabur.app', 
             
             dark: true, // 强制暗黑模式
@@ -107,9 +106,9 @@
                 'https://unpkg.com/@waline/emojis@1.1.0/bilibili',
                 'https://unpkg.com/@waline/emojis@1.1.0/qq',
             ],
-            placeholder: '请开始你的表演... (点击右下角“登录”可注册管理员)',
-            requiredMeta: ['nick'], // 昵称必填，邮箱选填
-            pageSize: 10, // 每页显示10条
+            placeholder: '请开始你的表演... (注册登录后可删除自己的评论)',
+            requiredMeta: ['nick'], // 仅昵称必填
+            pageSize: 10, 
         });
     </script>
 
