@@ -2,345 +2,548 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>欧语视界 | 院校就业全景图</title>
-    <meta name="description" content="拒绝内卷，换个赛道！这语夯为你提供阿拉伯语、西语、法语等小语种的高薪外派就业指南与院校分析。">
-<meta name="keywords" content="小语种就业, 阿拉伯语外派, 驻外高薪, 华为外派, 语言留学, 这是一个正经网站">
-<meta name="author" content="燃尽的作者">
-
-<meta property="og:type" content="website">
-<meta property="og:title" content="这语夯 | 拒绝内卷·换个赛道">
-<meta property="og:description" content="年薪20W+的岗位都在哪？点击查看全球语言职业地图。">
-<meta property="og:image" content="logo.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>欧语视界 | 深度资源库 (V71.0)</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* 全局设置 */
-        body { font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif; background-color: #0f172a; color: white; overflow-x: hidden; margin: 0; }
-        
-        /* === 五扇门布局 === */
-        .split-container { display: flex; height: calc(100vh - 64px); width: 100%; transition: all 0.5s; }
-        .split-panel { flex: 1; position: relative; transition: all 0.6s cubic-bezier(0.25, 0.8, 0.25, 1); cursor: pointer; overflow: hidden; display: flex; flex-direction: column; align-items: center; justify-content: center; border-right: 1px solid rgba(255,255,255,0.05); }
-        .split-panel:hover { flex: 2; }
-        .panel-bg { position: absolute; inset: 0; background-size: cover; background-position: center; opacity: 0.4; transition: all 0.6s; filter: grayscale(100%) contrast(1.2); z-index: 0; }
-        .split-panel:hover .panel-bg { opacity: 0.9; filter: grayscale(0%) contrast(1.1); transform: scale(1.05); }
-        
-        /* 语种配色 */
-        .fr-panel { background: linear-gradient(to bottom, #1e1b4b, #312e81); }
-        .es-panel { background: linear-gradient(to bottom, #431407, #9a3412); }
-        .it-panel { background: linear-gradient(to bottom, #000000, #1a1a1a); } /* 教父黑 */
-        .de-panel { background: linear-gradient(to bottom, #1c1917, #57534e); }
-        .more-panel { background: linear-gradient(to bottom, #2e1065, #6b21a8); }
+        /* === 全局设置 === */
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            background-color: #f8fafc; color: #1e293b;
+            min-height: 100vh; display: flex; flex-direction: column;
+        }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
 
-        .panel-content { position: relative; z-index: 10; text-align: center; transition: all 0.4s; opacity: 0.8; }
-        .split-panel:hover .panel-content { transform: translateY(-15px); opacity: 1; }
-        .panel-icon { font-size: 3.5rem; margin-bottom: 1rem; text-shadow: 0 10px 20px rgba(0,0,0,0.8); }
+        /* === 1. 入口大厅 (Lobby) === */
+        #lobby-section {
+            padding: 2rem 1rem 4rem;
+            min-height: 100vh;
+            display: flex; flex-direction: column; align-items: center;
+            background: #f1f5f9;
+        }
         
-        /* === 详情抽屉 === */
-        .detail-view { position: fixed; top: 64px; left: 0; width: 100%; height: calc(100vh - 64px); background: #f8fafc; color: #1e293b; transform: translateY(100%); transition: transform 0.5s cubic-bezier(0.77, 0, 0.175, 1); z-index: 50; overflow-y: auto; }
-        .detail-view.active { transform: translateY(0); }
-        .detail-header { padding: 3rem 1rem; text-align: center; position: relative; overflow: hidden; color: white; }
+        .lobby-header { text-align: center; margin: 4rem 0 3rem; }
+        .lobby-title { font-size: 3rem; font-weight: 900; color: #0f172a; margin-bottom: 0.5rem; letter-spacing: -1px; }
+        .lobby-desc { color: #64748b; font-size: 1.1rem; }
+
+        /* 2x2 网格布局 */
+        .lang-grid {
+            display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem;
+            width: 100%; max-width: 1000px; padding-bottom: 4rem;
+        }
+
+        /* 入口卡片 */
+        .entry-card {
+            position: relative; height: 300px; border-radius: 24px; overflow: hidden; cursor: pointer;
+            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.15); transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            border: 4px solid white; background: #cbd5e1; /* 兜底色 */
+        }
+        .entry-card:hover { transform: translateY(-8px) scale(1.02); box-shadow: 0 20px 50px -10px rgba(0,0,0,0.3); z-index: 10; }
         
-        /* 介绍文本框 */
-        .intro-text-box { max-width: 800px; mx-auto; margin-top: 1.5rem; font-size: 0.95rem; line-height: 1.6; opacity: 0.95; background: rgba(0,0,0,0.3); padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(5px); }
-
-        /* 关闭按钮 */
-        .close-btn { position: fixed; top: 80px; right: 20px; z-index: 60; width: 40px; height: 40px; background: white; color: black; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 10px 30px rgba(0,0,0,0.3); transition: all 0.3s; opacity: 0; pointer-events: none; }
-        .detail-view.active ~ .close-btn { opacity: 1; pointer-events: auto; }
-        .close-btn:hover { transform: rotate(90deg); background: #ef4444; color: white; }
-
-        /* 企业卡片 */
-        .job-card { background: white; border: 1px solid #e2e8f0; transition: all 0.3s; border-radius: 12px; padding: 1.25rem; display: flex; flex-direction: column; justify-content: space-between; height: 100%; }
-        .job-card:hover { transform: translateY(-3px); box-shadow: 0 15px 30px rgba(0,0,0,0.08); }
+        .entry-bg {
+            position: absolute; inset: 0; background-size: cover; background-position: center;
+            transition: transform 0.6s ease;
+        }
+        .entry-card:hover .entry-bg { transform: scale(1.1); }
         
-        /* 高校卡片 */
-        .uni-card { background: #f1f5f9; border-left: 4px solid #64748b; border-radius: 0 12px 12px 0; padding: 1.25rem; position: relative; }
-        .uni-card-score { font-family: monospace; font-weight: bold; color: #334155; background: #e2e8f0; padding: 2px 6px; rounded: 4px; font-size: 0.8rem; }
+        .entry-overlay {
+            position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.9), rgba(0,0,0,0.1));
+            display: flex; flex-direction: column; justify-content: flex-end; padding: 2rem;
+            color: white;
+        }
+        
+        .entry-title { font-size: 2.2rem; font-weight: 900; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 10px; text-shadow: 0 2px 10px rgba(0,0,0,0.5); }
+        .entry-sub { font-size: 0.9rem; opacity: 0.95; font-weight: 700; background: rgba(255,255,255,0.2); backdrop-filter: blur(5px); padding: 6px 14px; border-radius: 20px; width: fit-content; }
 
-        /* 意大利特供样式 (教父风) */
-        .it-job-card { background-color: #0a0a0a; border: 1px solid #333; border-left: 4px solid #991b1b; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-        .it-job-card:hover { border-color: #dc2626; transform: translateY(-5px); }
-        .it-uni-card { background: #171717; border-left: 4px solid #991b1b; color: #d4d4d4; border-top: 1px solid #333; border-right: 1px solid #333; border-bottom: 1px solid #333; }
-        .it-uni-card .uni-card-score { background: #333; color: #fca5a5; border: 1px solid #7f1d1d; }
+        /* 更多语种卡片 */
+        .more-card {
+            grid-column: span 2; background: white; border-radius: 20px; height: 80px;
+            display: flex; align-items: center; justify-content: center; gap: 10px;
+            color: #94a3b8; font-weight: 700; cursor: pointer; border: 2px dashed #cbd5e1;
+            transition: all 0.2s;
+        }
+        .more-card:hover { border-color: #64748b; color: #475569; background: #f1f5f9; }
 
-        /* 移动端 */
-        @media (max-width: 768px) { .split-container { flex-direction: column; } .split-panel { border-bottom: 1px solid rgba(255,255,255,0.1); } }
+        /* === 2. 详情页容器 === */
+        #detail-container { display: none; background: #f8fafc; min-height: 100vh; }
+
+        /* 悬浮导航 */
+        .sticky-nav {
+            position: fixed; top: 0; left: 0; width: 100%; z-index: 60;
+            padding: 0.8rem 1.5rem; display: flex; justify-content: space-between; align-items: center;
+            background: rgba(255,255,255,0.9); backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.02);
+        }
+        .back-btn { 
+            font-weight: 800; color: #64748b; display: flex; align-items: center; gap: 8px; cursor: pointer; 
+            padding: 8px 16px; background: #f1f5f9; border-radius: 30px; transition: all 0.2s;
+        }
+        .back-btn:hover { color: white; background: #0f172a; }
+
+        /* Hero 背景 */
+        .hero-bg {
+            height: 55vh; width: 100%; margin-top: 60px; position: relative;
+            background-color: #334155; background-size: cover; background-position: center;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            text-align: center; color: white;
+        }
+        .hero-overlay-mask { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(0,0,0,0.2), rgba(0,0,0,0.8)); z-index: 1; }
+        .hero-content { 
+            position: relative; z-index: 10; padding: 0 2rem; max-width: 900px; 
+            animation: fadeInUp 0.6s ease-out;
+        }
+        .hero-h1 { font-size: 3.5rem; font-weight: 900; margin-bottom: 1rem; text-shadow: 0 4px 20px rgba(0,0,0,0.8); }
+        .hero-p { 
+            font-size: 1.05rem; line-height: 1.7; 
+            background: rgba(0,0,0,0.6); padding: 1.5rem; border-radius: 16px; 
+            backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.2); 
+            text-align: left; font-weight: 500;
+        }
+        .hero-meta { margin-top: 10px; font-size: 0.8rem; opacity: 0.8; display: block; text-align: right; border-top: 1px solid rgba(255,255,255,0.2); padding-top: 8px; }
+
+        /* 教父模式 */
+        .godfather-mode .hero-bg { background-image: none !important; background-color: #000 !important; }
+        .godfather-mode .hero-bg::before {
+            content: 'THE GODFATHER'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            font-family: 'Times New Roman', serif; font-weight: 900; font-size: 12vw; 
+            color: rgba(255,255,255,0.05); white-space: nowrap; pointer-events: none; z-index: 0;
+        }
+        .godfather-mode .hero-h1 { font-family: 'Times New Roman', serif; color: #ef4444; text-shadow: 2px 2px 4px #000; }
+        
+        /* Tab 切换 */
+        .tab-container {
+            max-width: 800px; margin: -30px auto 2rem; position: relative; z-index: 20;
+            display: flex; justify-content: center; gap: 1rem; padding: 0 1rem;
+        }
+        .tab-btn {
+            flex: 1; text-align: center; padding: 14px;
+            background: white; border-radius: 16px; font-weight: 800; color: #64748b; font-size: 1.1rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1); cursor: pointer; border: 2px solid transparent;
+            transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px;
+        }
+        .tab-btn:active { transform: scale(0.95); }
+        .tab-btn.active { border-color: var(--theme-color); color: var(--theme-color); background: #fff; }
+
+        /* 列表内容 (竖排修正版) */
+        .content-list { max-width: 900px; margin: 0 auto 6rem; padding: 0 1.5rem; }
+        
+        .section-head { 
+            font-size: 1.4rem; font-weight: 800; color: #1e293b; margin: 3rem 0 1.5rem; 
+            display: flex; align-items: center; gap: 10px;
+            border-left: 5px solid var(--theme-color); padding-left: 1rem;
+        }
+
+        /* 卡片 */
+        .info-card {
+            background: white; padding: 1.5rem; border-radius: 16px;
+            border: 1px solid #e2e8f0; transition: all 0.3s; position: relative; overflow: hidden;
+            display: flex; flex-direction: column; justify-content: space-between;
+            margin-bottom: 1rem; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02);
+        }
+        .info-card:hover { transform: translateY(-3px); border-color: var(--theme-color); box-shadow: 0 15px 30px -10px rgba(0,0,0,0.1); }
+
+        .head-row { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem; }
+        .card-name { font-size: 1.2rem; font-weight: 800; color: #0f172a; }
+        .score-val { font-family: monospace; font-weight: 900; color: var(--theme-color); font-size: 1.1rem; background: #f1f5f9; padding: 2px 8px; border-radius: 6px; }
+        .tags-row { display: flex; gap: 6px; margin-bottom: 0.8rem; flex-wrap: wrap; }
+        .c-tag { font-size: 0.75rem; padding: 2px 8px; background: #f1f5f9; color: #64748b; border-radius: 6px; font-weight: 600; }
+        .hl-tag { background: var(--theme-light); color: var(--theme-color); }
+        .sub-text { font-size: 0.9rem; color: #64748b; line-height: 1.5; }
+        
+        .link-row { 
+            margin-top: 1.2rem; padding-top: 1rem; border-top: 1px solid #f1f5f9;
+            text-align: right; font-size: 0.85rem; font-weight: 700; color: var(--theme-color); 
+            cursor: pointer; display: flex; justify-content: flex-end; align-items: center; gap: 5px;
+        }
+
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        @media (max-width: 768px) {
+            .lang-grid { grid-template-columns: 1fr; }
+            .entry-card { height: 220px; }
+            .hero-h1 { font-size: 2.5rem; }
+        }
     </style>
 </head>
 <body>
 
-    <nav class="bg-slate-900 shadow-lg sticky top-0 z-50 border-b border-slate-800">
-        <div class="max-w-7xl mx-auto px-4 h-16 flex justify-between items-center">
-            <a href="index.html" class="flex items-center gap-2 text-slate-400 hover:text-white transition">
-                <i class="fa-solid fa-arrow-left"></i> <span class="font-bold">返回主页</span>
+    <div id="lobby-section">
+        <div class="w-full max-w-5xl mb-8 px-4 mt-8">
+            <a href="index.html" class="inline-flex items-center gap-2 text-slate-500 font-bold hover:text-black transition">
+                <div class="w-8 h-8 bg-white rounded-full flex items-center justify-center shadow-sm"><i class="fa-solid fa-arrow-left"></i></div>
+                返回地球
             </a>
-            <div class="font-bold text-lg text-white tracking-wider">EURO-ZONE 全景</div>
-        </div>
-    </nav>
-
-    <div class="split-container">
-        <div class="split-panel fr-panel" onclick="openDetail('fr')">
-            <div class="panel-bg" style="background-image: url('https://images.unsplash.com/photo-1502602898657-3e91760cbb34?q=80&w=1000&auto=format&fit=crop');"></div>
-            <div class="panel-content"><div class="panel-icon"><i class="fa-solid fa-wine-glass"></i></div><h2 class="text-3xl font-extrabold">法语区</h2><p class="text-indigo-200 text-xs uppercase tracking-widest">Africa & Luxury</p></div>
-        </div>
-        <div class="split-panel es-panel" onclick="openDetail('es')">
-            <div class="panel-bg" style="background-image: url('https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?q=80&w=1000&auto=format&fit=crop');"></div>
-            <div class="panel-content"><div class="panel-icon"><i class="fa-solid fa-guitar"></i></div><h2 class="text-3xl font-extrabold">西语区</h2><p class="text-orange-200 text-xs uppercase tracking-widest">Latam Growth</p></div>
-        </div>
-        <div class="split-panel it-panel" onclick="openDetail('it')">
-            <div class="panel-bg" style="background-image: url('https://images.unsplash.com/photo-1598556776374-4a3397b0d342?q=80&w=1000&auto=format&fit=crop'); filter: grayscale(100%) brightness(0.5) contrast(1.2);"></div>
-            <div class="panel-content"><div class="panel-icon text-red-600"><i class="fa-solid fa-user-tie"></i></div><h2 class="text-3xl font-extrabold text-white">意大利语</h2><p class="text-red-600 text-xs uppercase tracking-widest">The Godfather</p></div>
-        </div>
-        <div class="split-panel de-panel" onclick="openDetail('de')">
-            <div class="panel-bg" style="background-image: url('https://images.unsplash.com/photo-1449358070958-884ac9579399?q=80&w=1000&auto=format&fit=crop');"></div>
-            <div class="panel-content"><div class="panel-icon"><i class="fa-solid fa-gear"></i></div><h2 class="text-3xl font-extrabold">德语区</h2><p class="text-slate-300 text-xs uppercase tracking-widest">Industry 4.0</p></div>
-        </div>
-        <div class="split-panel more-panel" onclick="openDetail('more')">
-            <div class="panel-bg" style="background-image: url('https://images.unsplash.com/photo-1467269204594-9661b134dd2b?q=80&w=1000&auto=format&fit=crop');"></div>
-            <div class="panel-content"><div class="panel-icon animate-pulse"><i class="fa-solid fa-circle-plus"></i></div><h2 class="text-3xl font-extrabold">更多</h2><p class="text-purple-200 text-xs uppercase tracking-widest">Misc</p></div>
-        </div>
-    </div>
-
-    <div id="detail-container" class="detail-view">
-        <div id="d-header" class="detail-header">
-            <h1 id="d-title" class="text-4xl font-bold mb-4"></h1>
-            <div id="d-intro" class="intro-text-box"></div>
         </div>
 
-        <div class="max-w-7xl mx-auto p-6 md:p-10 pb-20">
+        <div class="lobby-header">
+            <h1 class="lobby-title">欧语视界</h1>
+            <p class="lobby-desc">点击语种卡片 · 解锁深度资源</p>
+        </div>
+
+        <div class="lang-grid">
+            <div class="entry-card" onclick="openLang('fr')" style="border-color: #4f46e5;">
+                <div class="entry-bg" style="background-image: url('https://images.unsplash.com/photo-1502602898657-3e91760cbb34?q=80&w=800&auto=format&fit=crop');"></div>
+                <div class="entry-overlay">
+                    <div class="entry-title">🇫🇷 法语</div>
+                    <div class="entry-sub">非洲基建 · 国际组织</div>
+                </div>
+            </div>
+
+            <div class="entry-card" onclick="openLang('de')" style="border-color: #0f766e;">
+                <div class="entry-bg" style="background-image: url('https://images.unsplash.com/photo-1467269204594-9661b134dd2b?q=80&w=800&auto=format&fit=crop');"></div>
+                <div class="entry-overlay">
+                    <div class="entry-title">🇩🇪 德语</div>
+                    <div class="entry-sub">工业引擎 · 精密制造</div>
+                </div>
+            </div>
+
+            <div class="entry-card" onclick="openLang('es')" style="border-color: #ea580c;">
+                <div class="entry-bg" style="background-image: url('https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?q=80&w=800&auto=format&fit=crop');"></div>
+                <div class="entry-overlay">
+                    <div class="entry-title">🇪🇸 西语</div>
+                    <div class="entry-sub">拉美矿业 · 互联出海</div>
+                </div>
+            </div>
+
+            <div class="entry-card" onclick="openLang('it')" style="border-color: #b91c1c;">
+                <div class="entry-bg" style="background-image: url('https://images.unsplash.com/photo-1529260830199-42c42dda5f3d?q=80&w=800&auto=format&fit=crop'); filter: grayscale(100%) contrast(1.2);"></div>
+                <div class="entry-overlay">
+                    <div class="entry-title text-red-500">🇮🇹 意大利语</div>
+                    <div class="entry-sub text-red-200">教父 · 超跑 · 奢华</div>
+                </div>
+            </div>
             
-            <div id="d-truth" class="p-4 mb-10 font-bold rounded-r text-lg border-l-8 shadow-sm flex items-center gap-3"></div>
-
-            <div class="grid lg:grid-cols-12 gap-8">
-                
-                <div class="lg:col-span-8">
-                    <h2 id="d-job-title" class="text-2xl font-bold mb-6 flex items-center gap-2">
-                        <i class="fa-solid fa-briefcase"></i> 核心名企 (Job)
-                    </h2>
-                    <div id="d-job-list" class="grid md:grid-cols-2 gap-4">
-                        </div>
-                </div>
-
-                <div class="lg:col-span-4">
-                    <h2 id="d-uni-title" class="text-2xl font-bold mb-6 flex items-center gap-2">
-                        <i class="fa-solid fa-graduation-cap"></i> 推荐名校 (Uni)
-                    </h2>
-                    <div class="bg-blue-50 border border-blue-200 text-blue-800 text-xs p-3 rounded mb-4">
-                        *分数线参考：山东省一段投档线 (满分750)
-                    </div>
-                    <div id="d-uni-list" class="space-y-4 max-h-[800px] overflow-y-auto pr-2">
-                        </div>
-
-                    <div class="mt-10 pt-6 border-t border-slate-200">
-                        <h3 class="font-bold text-lg mb-4"><i class="fa-solid fa-landmark"></i> 官方通道</h3>
-                        <div class="flex flex-col gap-2">
-                            <a href="http://bm.scs.gov.cn/" target="_blank" class="block bg-white border border-slate-300 text-center py-2 rounded hover:bg-slate-50 text-sm font-bold transition">国家公务员局 (外交部)</a>
-                            <a href="https://www.csc.edu.cn/" id="d-extra-link" target="_blank" class="block bg-white border border-slate-300 text-center py-2 rounded hover:bg-slate-50 text-sm font-bold transition">国家留学基金委 (CSC)</a>
-                        </div>
-                    </div>
-                </div>
-
+            <div class="more-card" onclick="alert('葡语、荷语、瑞典语资料整理中... 敬请期待！')">
+                <i class="fa-solid fa-circle-plus text-xl"></i> 更多欧洲小语种
             </div>
         </div>
     </div>
 
-    <div class="close-btn" onclick="closeDetail()"><i class="fa-solid fa-xmark text-xl"></i></div>
-
-    <div id="detail-more" class="detail-view">
-        <div class="detail-header bg-purple-900 h-full flex flex-col justify-center items-center">
-            <div class="text-9xl mb-8 animate-bounce">💀</div>
-            <h1 class="text-5xl font-bold mb-4">更多欧洲语种</h1>
-            <p class="text-2xl text-purple-200 max-w-2xl text-center mb-12">
-                葡萄牙语 / 荷兰语 / 希腊语 / 匈牙利语
-            </p>
-            <div class="bg-red-600/20 border border-red-500/50 p-6 rounded-xl animate-pulse">
-                <p class="text-pink-300 font-bold text-xl flex items-center gap-2">
-                    <i class="fa-solid fa-triangle-exclamation"></i> 
-                    作者要写死了，更多内容敬请期待...
-                </p>
-                <p class="text-sm text-purple-300 mt-2">Code is poetry, but writing data is pure torture.</p>
+    <div id="detail-container">
+        <div class="sticky-nav">
+            <div class="back-btn" onclick="backToLobby()">
+                <i class="fa-solid fa-chevron-left"></i> 切换语种
             </div>
-            <button onclick="closeDetail()" class="mt-12 bg-white text-purple-900 px-8 py-3 rounded-full font-bold hover:bg-purple-100 transition">返回主页</button>
+            <div class="font-black text-lg uppercase tracking-widest text-slate-800" id="nav-title">LANGUAGE</div>
         </div>
-    </div>
 
-    <div class="fixed bottom-6 right-6 z-50 flex items-center gap-2 group">
-        <div class="bg-slate-900 text-white text-xs py-1.5 px-3 rounded shadow-lg opacity-0 group-hover:opacity-100 transition duration-300 pointer-events-none">反馈: lizhulangnb666@gmail.com</div>
-        <a href="mailto:lizhulangnb666@gmail.com" class="w-12 h-12 bg-white border-2 border-gray-200 rounded-full flex items-center justify-center text-slate-600 hover:bg-blue-600 hover:text-white hover:border-blue-600 transition-all shadow-lg"><i class="fa-solid fa-envelope text-lg"></i></a>
+        <div class="hero-bg" id="hero-bg">
+            <div class="hero-overlay-mask"></div>
+            <div class="hero-content">
+                <h1 class="hero-h1" id="hero-title">TITLE</h1>
+                <div class="hero-p">
+                    <span id="hero-desc">DESC</span>
+                    <span class="hero-meta" id="hero-meta">DIFFICULTY & MONEY</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-container">
+            <div class="tab-btn active" id="btn-uni" onclick="switchTab('uni')">
+                <i class="fa-solid fa-graduation-cap"></i> 知名院校
+            </div>
+            <div class="tab-btn" id="btn-job" onclick="switchTab('job')">
+                <i class="fa-solid fa-briefcase"></i> 高薪就业
+            </div>
+        </div>
+
+        <div class="content-list">
+            <div id="score-alert" class="mb-6 bg-yellow-50 border border-yellow-200 text-yellow-800 px-4 py-3 rounded-lg text-sm flex items-start gap-3" style="display:none">
+                <i class="fa-solid fa-circle-info mt-1"></i>
+                <div>
+                    <strong>分数线说明：</strong> 数据基于 <strong>山东省 (高考改革标杆)</strong> 一段投档线参考。
+                </div>
+            </div>
+            
+            <div id="list-area" class="flex flex-col gap-4"></div>
+        </div>
     </div>
 
     <script>
-        // === 数据总库 (V13.0 玩梗版) ===
+        // ================== 数据库 (完整数据版) ==================
         const db = {
             'fr': {
-                theme: { bg: 'bg-indigo-900', text: 'text-indigo-600', light: 'bg-indigo-50', border: 'border-indigo-600' },
-                title: '🇫🇷 法语：非洲淘金 & 奢侈品',
-                intro: '法语是联合国第一书写语言。它就像一张双面唱片：A面是香榭丽舍大街的奢侈品与浪漫，B面是西非大草原上的基建与矿尘。想体面？去上海法企。想暴富？去刚果金挖矿。',
-                truth: '⚠️ 行业狠话：想在香榭丽舍喝咖啡？请去留学。想三年攒首付？请去西非修铁路。',
-                jobs: [
-                    { name: '中建八局', desc: '驻外翻译/商务，负责阿尔及利亚项目', tag: '基建/北非', pay: '25k-45k', link: 'https://www.cscec.com/' },
-                    { name: '紫金矿业', desc: '刚果(金)矿区翻译，含高额艰苦补助', tag: '矿业/刚果金', pay: '25k-50k', link: 'https://www.zijinmining.com/' },
-                    { name: '华为 (北非)', desc: '客户经理/财经，常驻摩洛哥、突尼斯', tag: '通信/摩洛哥', pay: '30k-60k', link: 'https://career.huawei.com/' },
-                    { name: 'LVMH集团', desc: '路易威登/迪奥零售管培生或市场部', tag: '奢侈品/上海', pay: '15k-30k', link: 'https://www.lvmh.com/' },
-                    { name: '中国路桥', desc: '塞内加尔办事处，负责商务对接', tag: '国企/西非', pay: '20k-35k', link: 'https://www.crbc.com/' },
-                    { name: '欧莱雅', desc: '市场营销/供应链，需法语流利', tag: '美妆/上海', pay: '15k-35k', link: 'https://www.loreal.com/' },
-                    { name: '江西国际', desc: '赞比亚/肯尼亚工程项目翻译', tag: '国企/驻外', pay: '18k-35k', link: 'http://www.cjic.cn/' },
-                    { name: '中铁建工', desc: '北非区域总部，行政与翻译岗', tag: '基建/北非', pay: '18k-30k', link: 'http://www.crceg.com/' }
-                ],
-                unis: [
-                    { name: '北京外国语大学', tag: 'A+', score: '628' },
-                    { name: '武汉大学', tag: '985', score: '645' },
-                    { name: '外交学院', tag: '王牌', score: '638' },
-                    { name: '南京大学', tag: 'C9', score: '658' },
-                    { name: '大连外国语大学', tag: '东北王', score: '545' } // 东北王驾到
-                ],
-                extraLink: 'https://cn.ambafrance.org/-Education-'
-            },
-            'es': {
-                theme: { bg: 'bg-orange-800', text: 'text-orange-600', light: 'bg-orange-50', border: 'border-orange-600' },
-                title: '🇪🇸 西语：拉美矿业 & 互联网',
-                intro: '别以为学西语只能去西班牙跳弗拉明戈。现在的西语圈是“冒险家的乐园”。中国互联网大厂（TikTok, Shein）和新能源巨头（比亚迪, 赣锋锂业）正在拉美大杀四方。',
-                truth: '⚠️ 真实性预警：别以为拉美只有毒枭。这里的锂矿、基建和跨境电商(Shein)是目前最大的蓝海。',
-                jobs: [
-                    { name: '华为 (拉美)', desc: '墨西哥/智利代表处，客户经理', tag: '高薪/墨西哥', pay: '35k-70k', link: 'https://career.huawei.com/' },
-                    { name: '赣锋锂业', desc: '阿根廷盐湖提锂项目，驻外翻译', tag: '锂矿/阿根廷', pay: '25k-50k', link: 'http://www.ganfenglithium.com/' },
-                    { name: '滴滴 (DiDi)', desc: '巴西/墨西哥运营，拉美是滴滴最大海外市场', tag: '互联网/巴西', pay: '30k-60k', link: 'https://www.didiglobal.com/' },
-                    { name: 'SHEIN', desc: '墨西哥供应链与本地化运营', tag: '电商/墨西哥', pay: '25k-50k', link: 'https://www.sheingroup.com/' },
-                    { name: '中国电建', desc: '阿根廷水电站项目商务经理', tag: '基建/阿根廷', pay: '20k-35k', link: 'https://www.powerchina.cn/' },
-                    { name: '比亚迪', desc: '智利分公司，新能源大巴销售', tag: '车企/智利', pay: '25k-45k', link: 'https://job.byd.com/' },
-                    { name: '极兔速递', desc: '拉美区域物流网络规划', tag: '物流/拉美', pay: '20k-40k', link: 'https://www.jtexpress.com.cn/' },
-                    { name: '大华股份', desc: '秘鲁/哥伦比亚安防设备销售', tag: '科技/秘鲁', pay: '20k-40k', link: 'https://dahuatech.zhiye.com/' }
-                ],
-                unis: [
-                    { name: '北京大学', tag: 'Top2', score: '676' },
-                    { name: '南京大学', tag: '985', score: '652' },
-                    { name: '北二外', tag: '旅游', score: '585' },
-                    { name: '四川外国语', tag: '西南', score: '552' },
-                    { name: '大连外国语大学', tag: '东北王', score: '538' } // 东北王驾到
-                ],
-                extraLink: 'https://beijing.cervantes.es/cn/default.htm'
-            },
-            'it': {
-                theme: { bg: 'bg-black', text: 'text-red-600', light: 'bg-gray-900', border: 'border-red-600' },
-                title: '🇮🇹 意大利语：艺术与权力',
-                intro: '你要么在米兰的T台上，要么在摩德纳的赛道上。意大利语的世界没有中间地带。这里是法拉利的引擎声，是古驰的高定秀，也是柯里昂家族的低语。想进入顶级奢侈品圈？这是你的入场券。',
-                truth: '🌹 "Leave the gun, take the cannoli." —— 别问家族生意，问就是奢侈品和超跑。在这里，不懂意大利语，你永远只是个局外人 (Outsider)。',
-                jobs: [
-                    { name: '法拉利', desc: '大中华区市场部，需精通意语', tag: '超跑/上海', pay: '20k-50k', link: 'https://www.ferrari.com/' },
-                    { name: '古驰 (Gucci)', desc: '零售管培生或Merchandiser', tag: '奢侈品/上海', pay: '15k-40k', link: 'https://www.gucci.com/' },
-                    { name: '意法半导体', desc: '深圳研发中心，技术支持翻译', tag: '芯片/深圳', pay: '20k-45k', link: 'https://www.st.com/' },
-                    { name: '普拉达', desc: '米兰总部对接或国内零售管理', tag: '时尚/米兰', pay: '15k-35k', link: 'https://www.pradagroup.com/' },
-                    { name: '玛莎拉蒂', desc: '品牌公关与活动策划', tag: '豪车/上海', pay: '18k-40k', link: 'https://www.maserati.com/' },
-                    { name: '倍耐力', desc: '轮胎制造技术翻译 (F1赞助商)', tag: '制造/兖州', pay: '15k-30k', link: 'https://www.pirelli.com/' },
-                    { name: '费列罗', desc: '供应链与采购专员', tag: '快消/杭州', pay: '12k-25k', link: 'https://www.ferrero.com.cn/' },
-                    { name: '菲亚特', desc: '汽车零部件进出口贸易', tag: '汽车/上海', pay: '15k-30k', link: 'https://www.stellantis.com/' }
-                ],
-                unis: [
-                    { name: '北京外国语大学', tag: 'No.1', score: '625' },
-                    { name: '对外经贸', tag: '财经', score: '615' },
-                    { name: '中国传媒大学', tag: '传媒', score: '608' },
-                    { name: '上海外国语大学', tag: '211', score: '620' },
-                    { name: '大连外国语大学', tag: '东北王', score: '535' } // 东北王驾到
-                ],
-                extraLink: 'https://iicpechino.esteri.it/zh/'
+                name: 'FRANÇAIS', theme: '#4f46e5', light: '#e0e7ff',
+                bg: 'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?q=80&w=1000&auto=format&fit=crop',
+                intro: {
+                    title: 'Français 法语', 
+                    text: '法语是联合国第一书写语言。不要只盯着巴黎的浪漫，真正的“暴富”机会在西非和北非的工程营地里。懂技术+会法语=降维打击。',
+                    meta: '难度：⭐⭐⭐⭐ | 钱途：⭐⭐⭐⭐⭐ (驻外极高)'
+                },
+                data: {
+                    'uni': [
+                        { section: '🏆 国内顶尖', list: [
+                            { name: '北京外国语大学', tag: 'A+', tag2: '外交', sub: '外交部定点，高翻摇篮', score: '635+' },
+                            { name: '武汉大学', tag: '985', tag2: '中法班', sub: '中法实验班，数学/法学双修', score: '645+' },
+                            { name: '南京大学', tag: 'C9', tag2: '学术', sub: '文学研究重镇', score: '658+' },
+                            { name: '外交学院', tag: '双一流', sub: '入部率极高', score: '638+' },
+                            { name: '复旦大学', tag: 'C9', sub: '位于上海，法企资源多', score: '665+' },
+                            { name: '中国人民大学', tag: '985', sub: '中法学院（苏州），国际化', score: '655+' },
+                            { name: '中山大学', tag: '985', sub: '华南第一，综合性强', score: '640+' },
+                            { name: '厦门大学', tag: '985', sub: '环境优美，学科扎实', score: '630+' }
+                        ]},
+                        { section: '💎 特色强校', list: [
+                            { name: '大连外国语大学', tag: '东北王', tag2: '特色', sub: '法语系历史悠久，师资极其强大', score: '555+' },
+                            { name: '上海外国语大学', tag: '211', sub: '魔都资源，商务方向强', score: '628+' },
+                            { name: '广东外语外贸', tag: '华南', sub: '广交会主力，经贸法语强', score: '575+' },
+                            { name: '西安外国语', tag: '西北', sub: '学科体系完备，保研率好', score: '545+' },
+                            { name: '四川外国语', tag: '西南', sub: '西南重镇，教学严谨', score: '550+' },
+                            { name: '天津外国语', tag: '天外', sub: '同传方向，京津就业好', score: '560+' }
+                        ]},
+                        { section: '🌍 留学圣地', list: [
+                            { name: '索邦大学', tag: '巴黎', sub: '人文社科世界顶尖', score: '公立' },
+                            { name: 'HEC Paris', tag: '商校', sub: '欧洲第一商学院，CEO摇篮', score: 'GMAT' },
+                            { name: '蒙特利尔大学', tag: '加拿大', sub: '北美最大法语大学，移民好', score: '申请' },
+                            { name: '巴黎高师', tag: '殿堂', sub: '思想家的摇篮', score: '精英' }
+                        ]}
+                    ],
+                    'job': [
+                        { section: '🏛️ 体制内/教育 (稳)', list: [
+                            { name: '外交部', tag: '公务员', desc: '地区业务司/翻译室', pay: '稳定', link: 'http://bm.scs.gov.cn/' },
+                            { name: '商务部', tag: '公务员', desc: '外事司/驻外经商处', pay: '稳定', link: 'http://bm.scs.gov.cn/' },
+                            { name: '高校教师', tag: '事业编', desc: '公办大学法语系讲师 (需博士)', pay: '12-20k', link: '#' },
+                            { name: '国际台 (CRI/CGTN)', tag: '媒体', desc: '法语频道编辑/记者', pay: '15-25k', link: 'https://www.cctv.com/' }
+                        ]},
+                        { section: '🏗️ 非洲基建 (年薪30w+)', list: [
+                            { name: '中建八局', tag: '基建', desc: '阿尔及利亚/北非 · 商务/翻译', pay: '25-45k', link: 'https://www.cscec.com/' },
+                            { name: '紫金矿业', tag: '矿业', desc: '刚果(金) · 驻外行政/翻译', pay: '25-50k', link: 'https://www.zijinmining.com/' },
+                            { name: '洛阳钼业', tag: '矿业', desc: '刚果(金) · 铜钴矿管理', pay: '30-50k', link: 'https://www.cmoc.com/' },
+                            { name: '中国路桥', tag: '央企', desc: '塞内加尔办事处', pay: '20-35k', link: 'https://www.crbc.com/' },
+                            { name: '中铁建工', tag: '基建', desc: '北非区域总部', pay: '18-30k', link: 'http://www.crceg.com/' }
+                        ]},
+                        { section: '📱 科技出海', list: [
+                            { name: '华为', tag: '科技', desc: '北非/西非代表处 · 财经', pay: '30-60k', link: 'https://career.huawei.com/' },
+                            { name: '传音控股', tag: '手机', desc: '非洲手机之王 · 市场', pay: '20-40k', link: 'https://www.transsion.com/' },
+                            { name: '中兴通讯', tag: '通信', desc: '法语区国家 · 交付', pay: '20-40k', link: 'https://job.zte.com.cn/' }
+                        ]},
+                        { section: '💄 奢牌/快消', list: [
+                            { name: 'LVMH集团', tag: '奢牌', desc: '上海 · 零售管培', pay: '15-30k', link: 'https://www.lvmh.com/' },
+                            { name: '欧莱雅', tag: '美妆', desc: '上海 · 市场营销/供应链', pay: '15-35k', link: 'https://www.loreal.com/' },
+                            { name: '迪卡侬', tag: '运动', desc: '全国 · 部门经理', pay: '8-15k', link: 'https://recruitment.decathlon.com.cn/' }
+                        ]}
+                    ]
+                }
             },
             'de': {
-                theme: { bg: 'bg-slate-800', text: 'text-slate-600', light: 'bg-slate-100', border: 'border-slate-600' },
-                title: '🇩🇪 德语：精密制造与车企',
-                intro: '严谨，严谨，还是TMD严谨。德语区是工程师的天堂，也是强迫症的乐园。虽然这里没有暴富的神话，但BBA（宝马奔驰大众）和西门子能给你提供一份体面、稳定、且让人羡慕的“中产阶级入场券”。',
-                truth: '⚠️ 行业狠话：德语不适合赌徒，只适合技术流。想搞快钱去隔壁西语区，想在这个世界稳稳地站住脚，来学德语。',
-                jobs: [
-                    { name: '宝马 (BMW)', desc: '沈阳工厂/北京研发中心', tag: '车企/沈阳', pay: '15k-30k', link: 'https://www.bmw.com.cn/' },
-                    { name: '西门子', desc: '医疗与工业自动化部门', tag: '电气/北京', pay: '15k-30k', link: 'https://www.siemens.com.cn/' },
-                    { name: '大众 (VW)', desc: '大众安徽/一汽大众翻译与协调', tag: '车企/合肥', pay: '15k-30k', link: 'https://www.volkswagen.com.cn/' },
-                    { name: '博世 (Bosch)', desc: '汽车底盘控制系统工程师/商务', tag: '工业/苏州', pay: '15k-30k', link: 'https://www.bosch.com.cn/' },
-                    { name: '巴斯夫', desc: '湛江一体化基地 (百亿投资)', tag: '化工/湛江', pay: '15k-30k', link: 'https://www.basf.com/' },
-                    { name: 'SAP', desc: 'ERP软件实施顾问/销售', tag: '软件/上海', pay: '20k-40k', link: 'https://www.sap.cn/' },
-                    { name: '拜耳', desc: '医药代表或临床协调员', tag: '医药/北京', pay: '15k-30k', link: 'https://www.bayer.com/' },
-                    { name: '蔡司', desc: '光学仪器销售与技术支持', tag: '光学/广州', pay: '15k-30k', link: 'https://www.zeiss.com.cn/' }
-                ],
-                unis: [
-                    { name: '同济大学', tag: '最强', score: '655' },
-                    { name: '上海外国语', tag: '211', score: '622' },
-                    { name: '青岛大学', tag: '特色', score: '575' },
-                    { name: '浙江大学', tag: 'C9', score: '660' },
-                    { name: '大连外国语大学', tag: '东北王', score: '542' } // 东北王驾到
-                ],
-                extraLink: 'https://www.goethe.de/ins/cn/zh/index.html'
+                name: 'DEUTSCH', theme: '#0f766e', light: '#ccfbf1',
+                bg: 'https://images.unsplash.com/photo-1467269204594-9661b134dd2b?q=80&w=1000&auto=format&fit=crop',
+                intro: { 
+                    title: 'Deutsch 德语', 
+                    text: '欧洲经济引擎。工程师和逻辑控的天堂。BBA、西门子提供了大量高质量的中产岗位。', 
+                    meta: '难度：⭐⭐⭐⭐⭐ | 钱途：⭐⭐⭐⭐ (稳定体面)' 
+                },
+                data: {
+                    'uni': [
+                        { section: '国内强校', list: [
+                            { name: '同济大学', tag: '王牌', sub: '工科+德语无敌', score: '655+' },
+                            { name: '北外', tag: 'A+', sub: '传统强校', score: '630+' },
+                            { name: '上外', tag: '211', sub: '上海德企多', score: '625+' },
+                            { name: '浙大', tag: 'C9', sub: '强基计划', score: '660+' },
+                            { name: '北理工', tag: '985', sub: '车辆工程+德语', score: '635+' },
+                            { name: '青岛大学', tag: '特色', sub: '德语历史底蕴', score: '575+' },
+                            { name: '大连外国语', tag: '规模', sub: '拥有德语大楼', score: '545+' },
+                            { name: '南京大学', tag: '985', sub: '中德法学', score: '650+' },
+                            { name: '中国政法', tag: '211', sub: '法律德语', score: '640+' },
+                            { name: '广外', tag: '华南', sub: '华南就业主力', score: '570+' }
+                        ]},
+                        { section: '留学名校', list: [
+                            { name: '慕尼黑工大', tag: 'TU9', sub: '工科圣地', score: '精英' },
+                            { name: '苏黎世联邦理工', tag: 'ETH', sub: '欧陆第一', score: 'S级' },
+                            { name: '海德堡大学', tag: '文科', sub: '哲学/医学', score: '历史' }
+                        ]}
+                    ],
+                    'job': [
+                        { section: '🏛️ 体制内/教育 (稳)', list: [
+                            { name: '外交部', tag: '公务员', desc: '欧洲司/驻德使馆', pay: '稳定', link: 'http://bm.scs.gov.cn/' },
+                            { name: '高校教师', tag: '事业编', desc: '德语专业讲师', pay: '12-20k', link: '#' },
+                            { name: '歌德学院', tag: '机构', desc: '德语教学/文化交流', pay: '10-18k', link: 'https://www.goethe.de/' }
+                        ]},
+                        { section: '德系车企', list: [
+                            { name: '宝马 (BMW)', tag: 'Top', desc: '沈阳/北京 · 研发/采购', pay: '15-30k', link: 'https://www.bmw.com.cn/' },
+                            { name: '大众 (VW)', tag: '合资', desc: '长春/上海 · 翻译', pay: '15-30k', link: 'https://www.volkswagen.com.cn/' },
+                            { name: '奔驰 (Benz)', tag: '豪华', desc: '北京 · 戴姆勒大中华区', pay: '18-35k', link: 'https://www.mercedes-benz.com.cn/' },
+                            { name: '奥迪', tag: '车企', desc: '长春 · 市场', pay: '15-30k', link: 'https://www.audi.cn/' }
+                        ]},
+                        { section: '隐形冠军', list: [
+                            { name: '西门子', tag: '电气', desc: '工业自动化', pay: '15-30k', link: 'https://www.siemens.com.cn/' },
+                            { name: '博世', tag: '零部件', desc: '汽车技术', pay: '15-30k', link: 'https://www.bosch.com.cn/' },
+                            { name: '巴斯夫', tag: '化工', desc: '湛江/上海', pay: '15-30k', link: 'https://www.basf.com/' },
+                            { name: 'SAP', tag: '软件', desc: 'ERP咨询', pay: '20-40k', link: 'https://www.sap.cn/' }
+                        ]}
+                    ]
+                }
+            },
+            'es': {
+                name: 'ESPAÑOL', theme: '#ea580c', light: '#ffedd5',
+                bg: 'https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?q=80&w=1000&auto=format&fit=crop',
+                intro: { 
+                    title: 'Español 西语', 
+                    text: '去墨西哥搞电商，去阿根廷挖锂矿。这是中国企业出海最火热的新大陆。', 
+                    meta: '难度：⭐⭐⭐ (入门简单) | 钱途：⭐⭐⭐⭐⭐ (风口)' 
+                },
+                data: {
+                    'uni': [
+                        { section: '国内强校', list: [
+                            { name: '北京大学', tag: 'Top2', sub: '西葡语系', score: '676+' },
+                            { name: '南京大学', tag: '985', sub: '学术极强', score: '650+' },
+                            { name: '北外', tag: 'No.1', sub: '外交部生源', score: '635+' },
+                            { name: '上外', tag: '211', sub: '复合人才', score: '625+' },
+                            { name: '北二外', tag: '特色', sub: '旅游/会展', score: '585+' },
+                            { name: '大连外国语', tag: '东北', sub: '拉美研究中心', score: '545+' },
+                            { name: '川外', tag: '西南', sub: '最大西语基地', score: '552+' },
+                            { name: '广外', tag: '华南', sub: '外贸西语', score: '572+' },
+                            { name: '对外经贸', tag: '211', sub: '经贸西语', score: '618+' }
+                        ]},
+                        { section: '留学名校', list: [
+                            { name: '马德里康普顿斯', tag: '西班牙', sub: '公立老牌', score: '低学费' },
+                            { name: '墨西哥国立自治', tag: '拉美', sub: '西语哈佛', score: '顶尖' }
+                        ]}
+                    ],
+                    'job': [
+                        { section: '🏛️ 体制内/教育 (稳)', list: [
+                            { name: '外交部', tag: '公务员', desc: '拉美司/驻外使馆', pay: '稳定', link: 'http://bm.scs.gov.cn/' },
+                            { name: '新华社', tag: '媒体', desc: '驻拉美记者', pay: '15-30k', link: 'http://job.xinhua-news.cn/' },
+                            { name: '高校教师', tag: '事业编', desc: '西语专业讲师', pay: '10-18k', link: '#' }
+                        ]},
+                        { section: '互联网出海', list: [
+                            { name: 'TikTok', tag: '拉美', desc: '墨西哥运营', pay: '25-50k', link: 'https://jobs.bytedance.com/' },
+                            { name: 'SHEIN', tag: '电商', desc: '墨西哥供应链', pay: '25-45k', link: 'https://www.sheingroup.com/' },
+                            { name: '滴滴', tag: '出行', desc: '巴西/智利运营', pay: '30-60k', link: 'https://www.didiglobal.com/' },
+                            { name: '快手', tag: '短视频', desc: '巴西市场', pay: '25-45k', link: 'https://www.kuaishou.com/' },
+                            { name: '极兔速递', tag: '物流', desc: '网络规划', pay: '20-40k', link: 'https://www.jtexpress.com.cn/' }
+                        ]},
+                        { section: '资源基建', list: [
+                            { name: '赣锋锂业', tag: '矿业', desc: '阿根廷驻外', pay: '25-50k', link: 'http://www.ganfenglithium.com/' },
+                            { name: '中国电建', tag: '基建', desc: '南美水电站', pay: '20-35k', link: 'https://www.powerchina.cn/' },
+                            { name: '华为', tag: '通信', desc: '拉美客户经理', pay: '35-70k', link: 'https://career.huawei.com/' },
+                            { name: '比亚迪', tag: '车企', desc: '智利/巴西', pay: '25-45k', link: 'https://job.byd.com/' }
+                        ]}
+                    ]
+                }
+            },
+            'it': {
+                name: 'ITALIANO', theme: '#b91c1c', light: '#fee2e2',
+                bg: 'https://images.unsplash.com/photo-1598556776374-4a3397b0d342?q=80&w=1000&auto=format&fit=crop',
+                isGodfather: true,
+                intro: { 
+                    title: 'Italiano 意语', 
+                    text: '不仅仅是黑手党。意大利是欧洲第二大制造业强国。超跑、奢侈品、高端家具的中心。入场券在此。', 
+                    meta: '难度：⭐⭐⭐ | 钱途：⭐⭐⭐⭐ (高端)' 
+                },
+                data: {
+                    'uni': [
+                        { section: '国内院校', list: [
+                            { name: '北外', tag: 'No.1', sub: '学科最全', score: '625+' },
+                            { name: '对外经贸', tag: '财经', sub: '中意经贸', score: '615+' },
+                            { name: '传媒大学', tag: '传媒', sub: '体育/艺术', score: '608+' },
+                            { name: '大连外国语', tag: '东北', sub: '教学扎实', score: '535+' },
+                            { name: '上外', tag: '211', sub: '上海意企多', score: '620+' },
+                            { name: '西外', tag: '西北', sub: '西北唯一', score: '540+' },
+                            { name: '天外', tag: '特色', sub: '马可波罗计划', score: '548+' },
+                            { name: '川外', tag: '西南', sub: '艺术氛围', score: '542+' }
+                        ]},
+                        { section: '艺术留学', list: [
+                            { name: '米兰理工', tag: '设计', sub: '建筑/设计顶尖', score: 'QS强' },
+                            { name: '佛罗伦萨美院', tag: '美术', sub: '美术殿堂', score: '图兰朵' }
+                        ]}
+                    ],
+                    'job': [
+                         { section: '🏛️ 体制内/艺术', list: [
+                            { name: '音乐学院', tag: '事业编', desc: '声乐/歌剧指导 (意语)', pay: '10-20k', link: '#' },
+                            { name: '领事馆', tag: '机构', desc: '意大利驻华领事馆', pay: '10-18k', link: '#' }
+                        ]},
+                        { section: '顶级制造', list: [
+                            { name: '法拉利', tag: '超跑', desc: '上海/意大利 · 市场', pay: '20-50k', link: 'https://www.ferrari.com/' },
+                            { name: '兰博基尼', tag: '超跑', desc: '北京 · 品牌', pay: '20-50k', link: 'https://www.lamborghini.com/' },
+                            { name: '倍耐力', tag: '制造', desc: '兖州 · 技术翻译', pay: '15-30k', link: 'https://www.pirelli.com/' },
+                            { name: '意法半导体', tag: '芯片', desc: '深圳 · 技术支持', pay: '20-45k', link: 'https://www.st.com/' }
+                        ]},
+                        { section: '时尚快消', list: [
+                            { name: '古驰', tag: '奢牌', desc: '零售管培', pay: '15-40k', link: 'https://www.gucci.com/' },
+                            { name: '普拉达', tag: '时尚', desc: '市场/公关', pay: '15-35k', link: 'https://www.pradagroup.com/' },
+                            { name: '费列罗', tag: '快消', desc: '供应链', pay: '12-25k', link: 'https://www.ferrero.com.cn/' },
+                            { name: '阿玛尼', tag: '时尚', desc: '品牌管理', pay: '15-30k', link: 'https://www.armani.com/' }
+                        ]}
+                    ]
+                }
             }
         };
 
-        // 动态渲染详情页
-        function openDetail(lang) {
-            const container = document.getElementById('detail-container');
-            const morePanel = document.getElementById('detail-more');
-            
-            if(lang === 'more') {
-                morePanel.classList.add('active');
-                return;
-            }
+        let currentLang = 'fr';
+        let currentTab = 'uni';
 
-            const data = db[lang];
-            if(!data) return;
-
-            // 1. 渲染头部
-            const header = document.getElementById('d-header');
-            header.className = `detail-header ${data.theme.bg}`;
-            document.getElementById('d-title').innerText = data.title;
-            document.getElementById('d-intro').innerText = data.intro;
-
-            // 2. 渲染狠话 (支持HTML)
-            const truth = document.getElementById('d-truth');
-            truth.innerHTML = data.truth; // 改为 innerHTML 以支持教父的玫瑰emoji
-            truth.className = `${data.theme.light} ${data.theme.text} border-l-4 ${data.theme.border} p-4 mb-10 font-bold rounded-r text-lg shadow-sm flex items-center gap-3`;
-
-            // 3. 渲染就业列表
-            const jobContainer = document.getElementById('d-job-list');
-            const isIT = lang === 'it';
-            
-            jobContainer.innerHTML = data.jobs.map(item => `
-                <div class="job-card group cursor-pointer border-l-4 ${isIT ? 'border-red-600 bg-[#111] border-gray-800 it-job-card' : (data.theme.border + ' bg-white')}">
-                    <div class="flex justify-between items-start mb-2">
-                        <div>
-                            <h4 class="font-bold text-lg ${isIT ? 'text-white' : 'text-slate-800'}">${item.name}</h4>
-                            <p class="text-xs ${isIT ? 'text-gray-400' : 'text-slate-500'} mt-1 line-clamp-2 h-8">${item.desc}</p>
-                        </div>
-                        <span class="text-xs px-2 py-1 rounded font-bold whitespace-nowrap ${isIT ? 'bg-red-900 text-white' : (data.theme.light + ' ' + data.theme.text)}">${item.tag}</span>
-                    </div>
-                    <div class="flex justify-between items-center pt-3 border-t ${isIT ? 'border-gray-800' : 'border-slate-100'} mt-auto">
-                        <span class="text-xs ${isIT ? 'text-gray-500' : 'text-slate-400'}">月薪(含津贴)</span>
-                        <span class="font-black text-lg ${isIT ? 'text-red-600' : data.theme.text}">${item.pay}</span>
-                    </div>
-                    <a href="${item.link}" target="_blank" class="block mt-3 w-full text-center text-xs py-2 rounded-lg font-bold transition ${isIT ? 'bg-red-700 text-white hover:bg-red-800' : (data.theme.bg + ' text-white hover:opacity-90')}">招聘官网 &rarr;</a>
-                </div>
-            `).join('');
-
-            // 4. 渲染院校列表
-            const uniContainer = document.getElementById('d-uni-list');
-            const uniTitle = document.getElementById('d-uni-title');
-            uniTitle.className = `text-2xl font-bold mb-6 flex items-center gap-2 ${data.theme.text}`;
-
-            uniContainer.innerHTML = data.unis.map(uni => `
-                <div class="uni-card ${isIT ? 'it-uni-card' : ''} border-l-4 ${isIT ? 'border-red-600 bg-[#1a1a1a] text-white' : (data.theme.border + ' bg-white')} shadow-sm rounded p-4">
-                    <div class="flex justify-between mb-1">
-                        <h4 class="font-bold">${uni.name}</h4>
-                        <span class="text-xs font-bold px-2 rounded ${isIT ? 'bg-red-900 text-white' : 'bg-slate-100 text-slate-600'}">${uni.tag}</span>
-                    </div>
-                    <div class="text-xs ${isIT ? 'text-gray-400' : 'text-slate-500'} flex justify-between mt-2">
-                        <span>山东投档线参考:</span>
-                        <span class="font-mono font-bold ${isIT ? 'text-red-400' : 'text-slate-700'}">${uni.score}</span>
-                    </div>
-                </div>
-            `).join('');
-
-            // 5. 额外链接
-            document.getElementById('d-extra-link').href = data.extraLink;
-
-            container.classList.add('active');
+        function openLang(key) {
+            currentLang = key;
+            document.getElementById('lobby-section').style.display = 'none';
+            document.getElementById('detail-container').style.display = 'block';
+            window.scrollTo(0, 0);
+            renderPage(); // 关键：确保数据渲染
         }
 
-        function closeDetail() {
-            document.querySelectorAll('.detail-view').forEach(el => el.classList.remove('active'));
+        function backToLobby() {
+            document.getElementById('detail-container').style.display = 'none';
+            document.getElementById('lobby-section').style.display = 'flex';
+        }
+
+        function switchTab(tab) {
+            currentTab = tab;
+            document.getElementById('btn-uni').className = `tab-btn ${tab === 'uni' ? 'active' : ''}`;
+            document.getElementById('btn-job').className = `tab-btn ${tab === 'job' ? 'active' : ''}`;
+            document.getElementById('score-alert').style.display = tab === 'uni' ? 'flex' : 'none';
+            renderList();
+        }
+
+        function renderPage() {
+            const data = db[currentLang];
+            document.documentElement.style.setProperty('--theme-color', data.theme);
+            document.documentElement.style.setProperty('--theme-light', data.light);
+
+            document.getElementById('nav-title').innerText = data.name;
+            document.getElementById('hero-title').innerText = data.intro.title; 
+            document.getElementById('hero-desc').innerText = data.intro.text;
+            document.getElementById('hero-meta').innerText = data.intro.meta;
+
+            const heroBg = document.getElementById('hero-bg');
+            const detailContainer = document.getElementById('detail-container');
+
+            if (data.isGodfather) {
+                detailContainer.classList.add('godfather-mode');
+                heroBg.style.backgroundImage = 'none';
+            } else {
+                detailContainer.classList.remove('godfather-mode');
+                heroBg.style.backgroundImage = `url('${data.bg}')`;
+            }
+
+            switchTab('uni'); // 确保初始化显示院校
+        }
+
+        function renderList() {
+            const listData = db[currentLang].data[currentTab];
+            const container = document.getElementById('list-area');
+            const themeColor = db[currentLang].theme;
+
+            container.innerHTML = listData.map(item => `
+                <div class="mb-8">
+                    <div class="section-head" style="color:#1e293b; font-size:1.2rem; font-weight:800; margin-bottom:1rem; border-left:4px solid ${themeColor}; padding-left:10px;">${item.section}</div>
+                    <div class="flex flex-col gap-4">
+                        ${item.list.map(i => `
+                            <div class="info-card cursor-pointer" onclick="${i.link ? `window.open('${i.link}')` : ''}">
+                                <div>
+                                    <div class="head-row">
+                                        <div class="card-name">${i.name}</div>
+                                        <div class="score-val" style="color:${themeColor}">${i.score || i.pay}</div>
+                                    </div>
+                                    <div class="tags-row"><span class="c-tag hl-tag">${i.tag}</span>${i.tag2 ? `<span class="c-tag">${i.tag2}</span>` : ''}</div>
+                                </div>
+                                <p class="sub-text">${i.sub || i.desc}</p>
+                                ${i.link ? `<div class="link-row" style="color:${themeColor}">直达官网 &rarr;</div>` : ''}
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `).join('');
         }
     </script>
 </body>
