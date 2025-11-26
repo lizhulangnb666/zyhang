@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="msvalidate.01" content="294E19D9DFD68195FDE3D63DEDD6FF5C" />
     <title>这语夯 | 语言连接未来</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -16,21 +17,10 @@
             font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'PingFang SC', sans-serif;
             background-color: #f0f2f5;
             display: flex; flex-direction: column;
-            min-height: 100vh;
         }
 
         /* 硬件加速类 */
         .gpu-accel { transform: translate3d(0,0,0); backface-visibility: hidden; }
-
-        /* === 动态流体背景 === */
-        .ambient-light { position: fixed; inset: 0; z-index: -1; pointer-events: none; overflow: hidden; }
-        .light-orb {
-            position: absolute; border-radius: 50%; filter: blur(100px); opacity: 0.4;
-            animation: float 20s infinite ease-in-out alternate;
-        }
-        .orb-1 { width: 800px; height: 800px; background: #c7d2fe; top: -20%; left: -10%; }
-        .orb-2 { width: 600px; height: 600px; background: #fbcfe8; bottom: -10%; right: -5%; animation-delay: -5s; }
-        @keyframes float { 0% { transform: translate(0, 0); } 100% { transform: translate(30px, 50px); } }
 
         /* === 导航栏 === */
         .nav-bar {
@@ -48,24 +38,18 @@
             display: flex; align-items: center; justify-content: center;
             box-shadow: 0 4px 6px rgba(0,0,0,0.05); transition: all 0.3s;
         }
+        /* 仅在 PC 端启用 Hover 特效 */
         @media (min-width: 769px) {
             .logo-box:hover { transform: scale(1.05) rotate(-3deg); background: white; }
         }
 
         /* === 核心动画：Q弹果冻效果 === */
         .pop-card {
-            opacity: 0; will-change: opacity, transform;
+            opacity: 0; transform: translateY(40px); /* 减小位移量，手机上更稳 */
+            transition: opacity 0.6s ease-out, transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+            will-change: opacity, transform; /* 开启 GPU 加速 */
         }
-        /* PC端：果冻回弹 */
-        @media (min-width: 769px) {
-            .pop-card { transform: translateY(40px); transition: opacity 0.6s ease-out, transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1); }
-            .pop-card.visible { opacity: 1; transform: translateY(0); }
-        }
-        /* 手机端：简单上浮 */
-        @media (max-width: 768px) {
-            .pop-card { transform: translateY(20px); transition: opacity 0.4s ease-out, transform 0.4s ease-out; }
-            .pop-card.visible { opacity: 1; transform: translateY(0); }
-        }
+        .pop-card.visible { opacity: 1; transform: translateY(0); }
 
         /* === 内容流布局 === */
         .content-flow {
@@ -77,7 +61,7 @@
         /* 1. 标题区 */
         .hero-section { 
             text-align: center; padding: 0 1rem; 
-            min-height: 85vh; 
+            min-height: 85vh; /* 手机上一屏 */
             display: flex; flex-direction: column; justify-content: center; align-items: center;
             margin-bottom: 2rem;
         }
@@ -101,6 +85,7 @@
         .big-word { font-size: 2.2rem; font-weight: 800; color: #1e293b; margin-bottom: 0.5rem; }
         .small-word { font-size: 0.9rem; color: #64748b; letter-spacing: 0.15em; text-transform: uppercase; font-weight: bold; }
         
+        /* 网格布局 (PC 3列，手机自动变 1列) */
         .grid-3 { 
             display: grid; 
             grid-template-columns: repeat(3, 1fr); 
@@ -195,13 +180,17 @@
             .grid-3, .entry-grid { grid-template-columns: 1fr; gap: 1.5rem; }
             .flip-container { height: 280px; }
             .info-card { padding: 1.5rem; }
-            /* 强制显示邮箱文字，确保不隐藏 */
-            .mail-text { display: inline !important; }
+            /* 强制显示邮箱文字 */
+            .mail-text { display: inline !important; font-size: 0.75rem; }
+            /* 胶囊样式微调 */
             .mail-capsule { 
-                bottom: 110px; right: 10px; /* 靠右下 */
-                padding: 8px 16px; /* 缩小一点内边距 */
-                max-width: 85vw; /* 防止太长溢出 */
-                font-size: 0.8rem;
+                padding: 8px 14px; 
+                bottom: 110px; 
+                right: 10px; 
+                max-width: 90vw; 
+                white-space: nowrap; 
+                overflow: hidden; 
+                text-overflow: ellipsis;
             }
             .clean-card { padding: 2rem; flex-direction: row; text-align: left; justify-content: flex-start; gap: 1.5rem; }
             .card-icon { margin-bottom: 0; font-size: 3rem; }
