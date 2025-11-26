@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>欧语视界 | 深度资源库 (V71.0)</title>
+    <title>欧语视界 | 深度资源库 (Mobile Fixed)</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -12,6 +12,7 @@
             font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'PingFang SC', 'Microsoft YaHei', sans-serif;
             background-color: #f8fafc; color: #1e293b;
             min-height: 100vh; display: flex; flex-direction: column;
+            overflow-x: hidden; /* 防止横向滚动 */
         }
         .hide-scrollbar::-webkit-scrollbar { display: none; }
 
@@ -21,13 +22,14 @@
             min-height: 100vh;
             display: flex; flex-direction: column; align-items: center;
             background: #f1f5f9;
+            width: 100%;
         }
         
         .lobby-header { text-align: center; margin: 4rem 0 3rem; }
         .lobby-title { font-size: 3rem; font-weight: 900; color: #0f172a; margin-bottom: 0.5rem; letter-spacing: -1px; }
         .lobby-desc { color: #64748b; font-size: 1.1rem; }
 
-        /* 2x2 网格布局 */
+        /* 网格布局 */
         .lang-grid {
             display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem;
             width: 100%; max-width: 1000px; padding-bottom: 4rem;
@@ -37,7 +39,7 @@
         .entry-card {
             position: relative; height: 300px; border-radius: 24px; overflow: hidden; cursor: pointer;
             box-shadow: 0 10px 30px -10px rgba(0,0,0,0.15); transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-            border: 4px solid white; background: #cbd5e1; /* 兜底色 */
+            border: 4px solid white; background: #cbd5e1;
         }
         .entry-card:hover { transform: translateY(-8px) scale(1.02); box-shadow: 0 20px 50px -10px rgba(0,0,0,0.3); z-index: 10; }
         
@@ -58,7 +60,8 @@
 
         /* 更多语种卡片 */
         .more-card {
-            grid-column: span 2; background: white; border-radius: 20px; height: 80px;
+            grid-column: span 2; /* PC端跨两列 */
+            background: white; border-radius: 20px; height: 80px;
             display: flex; align-items: center; justify-content: center; gap: 10px;
             color: #94a3b8; font-weight: 700; cursor: pointer; border: 2px dashed #cbd5e1;
             transition: all 0.2s;
@@ -66,7 +69,7 @@
         .more-card:hover { border-color: #64748b; color: #475569; background: #f1f5f9; }
 
         /* === 2. 详情页容器 === */
-        #detail-container { display: none; background: #f8fafc; min-height: 100vh; }
+        #detail-container { display: none; background: #f8fafc; min-height: 100vh; width: 100%; }
 
         /* 悬浮导航 */
         .sticky-nav {
@@ -92,7 +95,7 @@
         .hero-overlay-mask { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(0,0,0,0.2), rgba(0,0,0,0.8)); z-index: 1; }
         .hero-content { 
             position: relative; z-index: 10; padding: 0 2rem; max-width: 900px; 
-            animation: fadeInUp 0.6s ease-out;
+            animation: fadeInUp 0.6s ease-out; width: 100%;
         }
         .hero-h1 { font-size: 3.5rem; font-weight: 900; margin-bottom: 1rem; text-shadow: 0 4px 20px rgba(0,0,0,0.8); }
         .hero-p { 
@@ -126,15 +129,14 @@
         .tab-btn:active { transform: scale(0.95); }
         .tab-btn.active { border-color: var(--theme-color); color: var(--theme-color); background: #fff; }
 
-        /* 列表内容 (竖排修正版) */
+        /* 列表内容 */
         .content-list { max-width: 900px; margin: 0 auto 6rem; padding: 0 1.5rem; }
-        
         .section-head { 
             font-size: 1.4rem; font-weight: 800; color: #1e293b; margin: 3rem 0 1.5rem; 
             display: flex; align-items: center; gap: 10px;
             border-left: 5px solid var(--theme-color); padding-left: 1rem;
         }
-
+        
         /* 卡片 */
         .info-card {
             background: white; padding: 1.5rem; border-radius: 16px;
@@ -151,7 +153,6 @@
         .c-tag { font-size: 0.75rem; padding: 2px 8px; background: #f1f5f9; color: #64748b; border-radius: 6px; font-weight: 600; }
         .hl-tag { background: var(--theme-light); color: var(--theme-color); }
         .sub-text { font-size: 0.9rem; color: #64748b; line-height: 1.5; }
-        
         .link-row { 
             margin-top: 1.2rem; padding-top: 1rem; border-top: 1px solid #f1f5f9;
             text-align: right; font-size: 0.85rem; font-weight: 700; color: var(--theme-color); 
@@ -160,10 +161,24 @@
 
         @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
+        /* === 移动端核心适配 === */
         @media (max-width: 768px) {
-            .lang-grid { grid-template-columns: 1fr; }
-            .entry-card { height: 220px; }
+            /* 强制单列 */
+            .lang-grid { grid-template-columns: 1fr !important; gap: 1rem; }
+            
+            /* 卡片高度适应 */
+            .entry-card { height: 200px; }
+            
+            /* 标题大小 */
+            .lobby-title { font-size: 2.5rem; }
             .hero-h1 { font-size: 2.5rem; }
+            
+            /* "更多"卡片只占1列 */
+            .more-card { grid-column: span 1 !important; }
+            
+            /* 内边距调整 */
+            .content-list { padding: 0 1rem 6rem; }
+            .entry-title { font-size: 1.8rem; }
         }
     </style>
 </head>
@@ -262,7 +277,7 @@
     </div>
 
     <script>
-        // ================== 数据库 (完整数据版) ==================
+        // ================== 数据库 (完整内容) ==================
         const db = {
             'fr': {
                 name: 'FRANÇAIS', theme: '#4f46e5', light: '#e0e7ff',
@@ -294,7 +309,7 @@
                         ]},
                         { section: '🌍 留学圣地', list: [
                             { name: '索邦大学', tag: '巴黎', sub: '人文社科世界顶尖', score: '公立' },
-                            { name: 'HEC Paris', tag: '商校', sub: '欧洲第一商学院，CEO摇篮', score: 'GMAT' },
+                            { name: 'HEC Paris', tag: '商校', sub: '欧洲第一商学院', score: 'GMAT' },
                             { name: '蒙特利尔大学', tag: '加拿大', sub: '北美最大法语大学，移民好', score: '申请' },
                             { name: '巴黎高师', tag: '殿堂', sub: '思想家的摇篮', score: '精英' }
                         ]}
@@ -417,8 +432,7 @@
                         { section: '资源基建', list: [
                             { name: '赣锋锂业', tag: '矿业', desc: '阿根廷驻外', pay: '25-50k', link: 'http://www.ganfenglithium.com/' },
                             { name: '中国电建', tag: '基建', desc: '南美水电站', pay: '20-35k', link: 'https://www.powerchina.cn/' },
-                            { name: '华为', tag: '通信', desc: '拉美客户经理', pay: '35-70k', link: 'https://career.huawei.com/' },
-                            { name: '比亚迪', tag: '车企', desc: '智利/巴西', pay: '25-45k', link: 'https://job.byd.com/' }
+                            { name: '华为', tag: '通信', desc: '拉美客户经理', pay: '35-70k', link: 'https://career.huawei.com/' }
                         ]}
                     ]
                 }
@@ -479,7 +493,7 @@
             document.getElementById('lobby-section').style.display = 'none';
             document.getElementById('detail-container').style.display = 'block';
             window.scrollTo(0, 0);
-            renderPage(); // 关键：确保数据渲染
+            renderPage();
         }
 
         function backToLobby() {
@@ -516,7 +530,7 @@
                 heroBg.style.backgroundImage = `url('${data.bg}')`;
             }
 
-            switchTab('uni'); // 确保初始化显示院校
+            switchTab('uni');
         }
 
         function renderList() {
