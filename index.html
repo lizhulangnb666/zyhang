@@ -16,10 +16,21 @@
             font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'PingFang SC', sans-serif;
             background-color: #f0f2f5;
             display: flex; flex-direction: column;
+            min-height: 100vh;
         }
 
-        /* 硬件加速类：防止手机掉帧 */
+        /* 硬件加速类 */
         .gpu-accel { transform: translate3d(0,0,0); backface-visibility: hidden; }
+
+        /* === 动态流体背景 === */
+        .ambient-light { position: fixed; inset: 0; z-index: -1; pointer-events: none; overflow: hidden; }
+        .light-orb {
+            position: absolute; border-radius: 50%; filter: blur(100px); opacity: 0.4;
+            animation: float 20s infinite ease-in-out alternate;
+        }
+        .orb-1 { width: 800px; height: 800px; background: #c7d2fe; top: -20%; left: -10%; }
+        .orb-2 { width: 600px; height: 600px; background: #fbcfe8; bottom: -10%; right: -5%; animation-delay: -5s; }
+        @keyframes float { 0% { transform: translate(0, 0); } 100% { transform: translate(30px, 50px); } }
 
         /* === 导航栏 === */
         .nav-bar {
@@ -37,18 +48,24 @@
             display: flex; align-items: center; justify-content: center;
             box-shadow: 0 4px 6px rgba(0,0,0,0.05); transition: all 0.3s;
         }
-        /* 仅在 PC 端启用 Hover 特效 */
         @media (min-width: 769px) {
             .logo-box:hover { transform: scale(1.05) rotate(-3deg); background: white; }
         }
 
         /* === 核心动画：Q弹果冻效果 === */
         .pop-card {
-            opacity: 0; transform: translateY(40px); /* 减小位移量，手机上更稳 */
-            transition: opacity 0.6s ease-out, transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
-            will-change: opacity, transform; /* 开启 GPU 加速 */
+            opacity: 0; will-change: opacity, transform;
         }
-        .pop-card.visible { opacity: 1; transform: translateY(0); }
+        /* PC端：果冻回弹 */
+        @media (min-width: 769px) {
+            .pop-card { transform: translateY(40px); transition: opacity 0.6s ease-out, transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1); }
+            .pop-card.visible { opacity: 1; transform: translateY(0); }
+        }
+        /* 手机端：简单上浮 */
+        @media (max-width: 768px) {
+            .pop-card { transform: translateY(20px); transition: opacity 0.4s ease-out, transform 0.4s ease-out; }
+            .pop-card.visible { opacity: 1; transform: translateY(0); }
+        }
 
         /* === 内容流布局 === */
         .content-flow {
@@ -60,7 +77,7 @@
         /* 1. 标题区 */
         .hero-section { 
             text-align: center; padding: 0 1rem; 
-            min-height: 85vh; /* 手机上一屏 */
+            min-height: 85vh; 
             display: flex; flex-direction: column; justify-content: center; align-items: center;
             margin-bottom: 2rem;
         }
@@ -84,7 +101,6 @@
         .big-word { font-size: 2.2rem; font-weight: 800; color: #1e293b; margin-bottom: 0.5rem; }
         .small-word { font-size: 0.9rem; color: #64748b; letter-spacing: 0.15em; text-transform: uppercase; font-weight: bold; }
         
-        /* 网格布局 (PC 3列，手机自动变 1列) */
         .grid-3 { 
             display: grid; 
             grid-template-columns: repeat(3, 1fr); 
@@ -94,7 +110,6 @@
         /* === 六卡翻转结构 (Flip Cards) === */
         .flip-container {
             background-color: transparent; height: 280px; perspective: 1000px; cursor: pointer;
-            /* 手机上防止点击高亮背景 */
             -webkit-tap-highlight-color: transparent;
         }
         .flip-inner {
@@ -139,7 +154,6 @@
             display: flex; flex-direction: column; align-items: center; text-align: center;
             box-shadow: 0 20px 40px -10px rgba(0,0,0,0.05);
             transition: background 0.3s;
-            /* 手机上触摸反馈 */
             -webkit-tap-highlight-color: transparent;
         }
         .clean-card:active { transform: scale(0.98); background: #f8fafc; }
@@ -147,6 +161,7 @@
         .card-title { font-size: 2rem; font-weight: 900; color: #1e293b; margin-bottom: 0.5rem; }
         .card-text { font-size: 1rem; color: #64748b; }
         .card-tag { margin-top: 1.5rem; padding: 6px 16px; border-radius: 100px; font-size: 0.8rem; font-weight: 700; background: var(--bg-tag); color: var(--color-tag); }
+        .clean-card:hover .card-icon { color: var(--color-tag); }
 
         /* === 底部 Dock & 邮箱 === */
         .dock-wrapper { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); z-index: 90; width: 90%; max-width: 420px; }
@@ -158,7 +173,7 @@
             box-shadow: 0 25px 50px -10px rgba(0,0,0,0.4);
         }
         .dock-btn { display: flex; flex-direction: column; align-items: center; gap: 4px; color: #94a3b8; font-size: 0.7rem; font-weight: 600; cursor: pointer; padding: 0 10px; transition: all 0.2s; }
-        .dock-btn:active { color: white; transform: scale(0.95); } /* 手机反馈 */
+        .dock-btn:active { color: white; transform: scale(0.95); }
         .dock-btn i { font-size: 1.4rem; margin-bottom: 2px; }
         .dock-line { width: 1px; height: 24px; background: rgba(255,255,255,0.15); }
 
@@ -170,7 +185,6 @@
             color: #334155; font-weight: 600;
         }
 
-        /* 动画关键帧 */
         @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes slideDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
@@ -178,19 +192,21 @@
         /* === ⚠️ 移动端核心适配 === */
         @media (max-width: 768px) {
             .hero-title { font-size: 3.5rem; }
-            /* 强制把 Grid 变成单列 */
             .grid-3, .entry-grid { grid-template-columns: 1fr; gap: 1.5rem; }
-            /* 手机上卡片高度自适应 */
             .flip-container { height: 280px; }
             .info-card { padding: 1.5rem; }
-            /* 邮箱只显示图标 */
-            .mail-text { display: none; }
-            .mail-capsule { padding: 0; width: 50px; height: 50px; justify-content: center; bottom: 110px; }
-            /* 入口卡片样式微调 */
+            /* 强制显示邮箱文字，确保不隐藏 */
+            .mail-text { display: inline !important; }
+            .mail-capsule { 
+                bottom: 110px; right: 10px; /* 靠右下 */
+                padding: 8px 16px; /* 缩小一点内边距 */
+                max-width: 85vw; /* 防止太长溢出 */
+                font-size: 0.8rem;
+            }
             .clean-card { padding: 2rem; flex-direction: row; text-align: left; justify-content: flex-start; gap: 1.5rem; }
             .card-icon { margin-bottom: 0; font-size: 3rem; }
             .card-tag { margin-top: 0; margin-left: auto; align-self: center; }
-            .section-block { margin-bottom: 4rem; } /* 减小间距 */
+            .section-block { margin-bottom: 4rem; }
         }
     </style>
 </head>
@@ -210,7 +226,7 @@
 
     <a href="mailto:lizhulangnb666@gmail.com" class="mail-capsule">
         <i class="fa-solid fa-envelope text-xl text-blue-600"></i>
-        <span class="mail-text text-sm">lizhulangnb666@gmail.com</span>
+        <span class="mail-text">lizhulangnb666@gmail.com</span>
     </a>
 
     <div class="content-flow">
@@ -331,36 +347,30 @@
             </div>
         </section>
 
-        <section class="section-block entry-section">
-            <div class="section-header">
-                <h2 class="big-word">选择你的战场</h2>
-                <p class="small-word">CHOOSE YOUR BATTLEFIELD</p>
+        <section class="section-block entry-grid">
+            <div class="clean-card pop-card" style="--hover: #3b82f6; --bg-tag: #eff6ff; --color-tag: #2563eb;" onclick="window.location.href='euro.html'">
+                <i class="fa-solid fa-earth-europe card-icon"></i>
+                <div>
+                    <h2 class="card-title">欧语视界</h2>
+                    <p class="card-text">法 / 西 / 德 / 意</p>
+                </div>
+                <span class="card-tag">教父 / 奢侈品 / 工业</span>
             </div>
-            <div class="entry-grid">
-                <div class="clean-card pop-card" style="--hover: #3b82f6; --bg-tag: #eff6ff; --color-tag: #2563eb;" onclick="window.location.href='euro.html'">
-                    <i class="fa-solid fa-earth-europe card-icon"></i>
-                    <div>
-                        <h2 class="card-title">欧语视界</h2>
-                        <p class="card-text">法 / 西 / 德 / 意</p>
-                    </div>
-                    <span class="card-tag">教父 / 奢侈品 / 工业</span>
+            <div class="clean-card pop-card" style="--hover: #f59e0b; --bg-tag: #fffbeb; --color-tag: #d97706;" onclick="window.location.href='arab.html'">
+                <i class="fa-solid fa-mosque card-icon"></i>
+                <div>
+                    <h2 class="card-title">掘金中东</h2>
+                    <p class="card-text">阿拉伯语 (Arabic)</p>
                 </div>
-                <div class="clean-card pop-card" style="--hover: #f59e0b; --bg-tag: #fffbeb; --color-tag: #d97706;" onclick="window.location.href='arab.html'">
-                    <i class="fa-solid fa-mosque card-icon"></i>
-                    <div>
-                        <h2 class="card-title">掘金中东</h2>
-                        <p class="card-text">阿拉伯语 (Arabic)</p>
-                    </div>
-                    <span class="card-tag">石油 / 基建 / 高津贴</span>
+                <span class="card-tag">石油 / 基建 / 高津贴</span>
+            </div>
+            <div class="clean-card pop-card" style="--hover: #ec4899; --bg-tag: #fce7f3; --color-tag: #db2777;" onclick="window.location.href='asia.html'">
+                <i class="fa-solid fa-torii-gate card-icon"></i>
+                <div>
+                    <h2 class="card-title">赛博亚洲</h2>
+                    <p class="card-text">日 / 韩 / 俄 / 东南亚</p>
                 </div>
-                <div class="clean-card pop-card" style="--hover: #ec4899; --bg-tag: #fce7f3; --color-tag: #db2777;" onclick="window.location.href='asia.html'">
-                    <i class="fa-solid fa-torii-gate card-icon"></i>
-                    <div>
-                        <h2 class="card-title">赛博亚洲</h2>
-                        <p class="card-text">日 / 韩 / 俄 / 东南亚</p>
-                    </div>
-                    <span class="card-tag">电商 / 快乐老家</span>
-                </div>
+                <span class="card-tag">电商 / 快乐老家</span>
             </div>
         </section>
 
@@ -387,40 +397,28 @@
     </footer>
 
     <script>
-        // 1. 翻转逻辑 (手机/PC通用)
+        // 1. 翻转逻辑 (全平台点击)
         function toggleFlip(element) {
             element.classList.toggle('flipped');
         }
 
-        // 2. 动画触发器 (Scroll Reveal)
-        // 手机优化：threshold 调小，进入一点点就开始动画
+        // 2. PC端激活 Tilt
+        if (window.innerWidth > 768) {
+            VanillaTilt.init(document.querySelectorAll(".clean-card"), { max: 8, speed: 400, scale: 1.02 });
+        }
+
+        // 3. 滚动监听
         const observer = new IntersectionObserver((entries) => {
             entries.forEach((entry, index) => {
                 if (entry.isIntersecting) {
-                    const parent = entry.target.parentNode;
-                    const children = Array.from(parent.children);
-                    // 仅计算同一组里的顺序，避免全局延迟过高
-                    const relativeIndex = children.indexOf(entry.target);
-                    const delay = relativeIndex * 100; // 间隔缩短到 100ms，更跟手
-                    
-                    setTimeout(() => {
-                        entry.target.classList.add('visible');
-                    }, delay);
-                    
+                    // 仅在可见时添加动画，不强制延迟
+                    entry.target.classList.add('visible');
                     observer.unobserve(entry.target);
                 }
             });
         }, { threshold: 0.05 });
-
-        // 绑定动画
+        
         document.querySelectorAll('.pop-card').forEach(el => observer.observe(el));
-
-        // 3. 仅在 PC 端激活 Tilt 3D 特效，手机禁用以防卡顿
-        if (window.innerWidth > 768) {
-            VanillaTilt.init(document.querySelectorAll(".clean-card"), { 
-                max: 8, speed: 400, scale: 1.02 
-            });
-        }
     </script>
 </body>
 </html>
