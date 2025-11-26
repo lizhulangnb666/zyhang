@@ -6,155 +6,188 @@
     <title>这语夯 | 语言连接未来</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.7.0/vanilla-tilt.min.js"></script>
+
     <style>
-        /* === 全局动态背景 === */
-        body { 
-            font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif; 
+        html { scroll-behavior: smooth; }
+        
+        /* === 1. 全局背景：钛金灰流体 (Titanium Flow) === */
+        body {
             margin: 0; overflow-x: hidden; color: #1e293b;
-            /* 极光流体背景 */
-            background: linear-gradient(-45deg, #a18cd1, #fbc2eb, #fad0c4, #ffd1ff);
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'PingFang SC', sans-serif;
+            
+            /* 👇 灰色系高级渐变 👇 */
+            background: linear-gradient(-45deg, #f1f5f9, #e2e8f0, #cbd5e1, #f8fafc);
             background-size: 400% 400%;
-            animation: gradientBG 15s ease infinite;
+            animation: gradientBG 20s ease infinite;
+            
+            perspective: 2000px; 
             min-height: 100vh;
             display: flex; flex-direction: column;
         }
+
         @keyframes gradientBG {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
             100% { background-position: 0% 50%; }
         }
 
-        /* 磨砂玻璃层罩 */
+        /* 磨砂玻璃遮罩 */
         .glass-overlay {
             position: fixed; inset: 0; 
-            background: rgba(255, 255, 255, 0.25); 
-            backdrop-filter: blur(35px);
-            z-index: 0;
+            background: rgba(255, 255, 255, 0.1); 
+            backdrop-filter: blur(40px);
+            z-index: -1;
         }
 
-        .content-layer { position: relative; z-index: 10; flex-grow: 1; display: flex; flex-direction: column; }
-
-        /* === 导航栏 === */
-        .nav-bar {
-            padding: 1.5rem 2rem; display: flex; justify-content: space-between; align-items: center;
+        /* === 2. 导航与 Logo === */
+        .logo-wrapper {
+            position: fixed; top: 2rem; left: 2rem; z-index: 50;
+            display: flex; align-items: center; gap: 0.75rem; cursor: pointer;
         }
-
-        /* === 核心：全息通行证卡片 === */
-        .card-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            max-width: 1200px;
-            width: 90%;
-            margin: 1rem auto 2rem auto;
-        }
-
-        .pass-card {
-            background: rgba(255, 255, 255, 0.65);
-            border: 1px solid rgba(255, 255, 255, 0.9);
-            border-radius: 24px;
-            padding: 2.5rem;
-            cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            display: flex; flex-direction: column; align-items: center; text-align: center;
-            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.05);
-            position: relative; overflow: hidden;
-        }
-
-        .pass-card:hover {
-            transform: translateY(-8px) scale(1.01);
-            background: rgba(255, 255, 255, 0.9);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
-        }
-
-        .icon-circle {
-            width: 80px; height: 80px; border-radius: 50%;
+        .logo-box {
+            width: 3rem; height: 3rem; 
+            background: rgba(255,255,255,0.8); backdrop-filter: blur(10px);
+            border-radius: 12px; border: 1px solid rgba(255,255,255,0.6);
             display: flex; align-items: center; justify-content: center;
-            font-size: 2.5rem; margin-bottom: 1.5rem; color: white;
-            transition: transform 0.5s; box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-        }
-        .pass-card:hover .icon-circle { transform: rotateY(180deg); }
-
-        /* 配色 */
-        .card-euro .icon-circle { background: linear-gradient(135deg, #3b82f6, #2563eb); }
-        .card-euro:hover { border-color: #3b82f6; }
-
-        .card-arab .icon-circle { background: linear-gradient(135deg, #f59e0b, #d97706); }
-        .card-arab:hover { border-color: #f59e0b; }
-
-        .card-asia .icon-circle { background: linear-gradient(135deg, #ec4899, #db2777); }
-        .card-asia:hover { border-color: #ec4899; }
-
-        /* === 底部干货说明 === */
-        .info-section {
-            max-width: 1000px; width: 90%; margin: 0 auto 2rem auto;
-        }
-        .info-card {
-            background: rgba(255, 255, 255, 0.5);
-            border: 1px solid rgba(255, 255, 255, 0.7);
-            border-radius: 16px;
-            padding: 1.5rem;
-            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
             transition: all 0.3s;
         }
-        .info-card:hover { background: rgba(255, 255, 255, 0.85); transform: translateY(-3px); border-color: white; }
+        .logo-box:hover { transform: scale(1.1) rotate(-5deg); background: white; }
 
-        /* === 底部 Dock 栏 (功能入口) === */
-        .dock-bar {
-            background: rgba(255, 255, 255, 0.8);
-            backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.6);
-            border-radius: 24px;
-            padding: 0.8rem 2.5rem;
-            display: inline-flex; gap: 3rem; /* 增加间距 */
-            margin: 0 auto 4rem auto; /* 底部留白增加 */
-            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
-            z-index: 20; /* 确保在最上层 */
+        /* === 3. 邮箱胶囊 (右下角) === */
+        .mail-capsule {
+            position: fixed; bottom: 40px; right: 40px; z-index: 100;
+            background: #1e293b; color: white;
+            padding: 12px 24px; border-radius: 50px;
+            display: flex; align-items: center; gap: 10px;
+            box-shadow: 0 10px 30px -5px rgba(0,0,0,0.3);
+            font-weight: bold; font-size: 0.9rem;
+            transition: all 0.3s; text-decoration: none;
         }
-        .dock-item {
-            display: flex; flex-direction: column; align-items: center; gap: 6px;
-            cursor: pointer; color: #64748b; transition: all 0.3s;
-            min-width: 70px;
-        }
-        .dock-item:hover { color: #0f172a; transform: translateY(-4px); }
-        .dock-icon {
-            width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.4rem;
-            transition: all 0.3s;
-        }
-        .dock-item:hover .dock-icon { transform: scale(1.1); box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
-
-        /* 邮箱悬浮 (固定右下角，不参与流式布局) */
-        .mail-float { position: fixed; bottom: 30px; right: 30px; z-index: 50; }
-        .mail-btn {
-            width: 50px; height: 50px; background: white; border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.15); transition: all 0.3s;
-            color: #64748b; font-size: 1.2rem; border: 1px solid #f1f5f9;
-        }
-        .mail-btn:hover { transform: scale(1.1); color: #2563eb; border-color: #2563eb; }
-        .mail-pop {
-            position: absolute; bottom: 60px; right: 0; background: #1e293b; color: white;
-            padding: 8px 12px; border-radius: 8px; font-size: 12px; opacity: 0;
-            transition: opacity 0.3s; pointer-events: none; white-space: nowrap;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-        }
-        .mail-btn:hover + .mail-pop { opacity: 1; }
+        .mail-capsule:hover { transform: translateY(-5px) scale(1.05); background: #3b82f6; }
         
-        /* 打字机特效 */
-        .typing-container { display: inline-block; }
-        .typing-effect {
-            font-family: 'Courier New', Courier, monospace;
-            overflow: hidden; border-right: .15em solid #f59e0b; white-space: nowrap;
-            animation: typing 3s steps(30, end), blink-caret .75s step-end infinite;
+        /* === 4. 第一屏：标题 === */
+        .section-hero {
+            min-height: 85vh;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            text-align: center; z-index: 10; padding-top: 2rem;
         }
-        @keyframes typing { from { width: 0 } to { width: 100% } }
-        @keyframes blink-caret { from, to { border-color: transparent } 50% { border-color: #f59e0b; } }
+        .hero-title {
+            font-size: 4.5rem; line-height: 1.1; font-weight: 900; letter-spacing: -0.05em; color: #0f172a; margin-bottom: 1.5rem;
+            animation: slideUpFade 1s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+        .gradient-text {
+            /* 这里的渐变色稍微深一点，配合灰色背景 */
+            background: linear-gradient(to right, #2563eb, #7c3aed);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; display: inline-block;
+        }
+        .hero-desc {
+            font-size: 1.25rem; color: #475569; font-weight: 500; max-width: 600px; line-height: 1.6; padding: 0 1.5rem;
+            animation: slideUpFade 1s 0.2s backwards;
+        }
+        .scroll-hint {
+            margin-top: 3rem; color: #94a3b8; font-size: 2rem; cursor: pointer;
+            animation: bounce 2s infinite;
+        }
+        @media (min-width: 768px) { .hero-title { font-size: 7rem; } }
 
+        /* === 5. 第二屏：3D 翻转情报区 === */
+        .section-bridge {
+            padding: 8rem 2rem 4rem; 
+            max-width: 1100px; margin: 0 auto;
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem;
+        }
+        
+        .flip-container {
+            background-color: transparent; height: 300px; perspective: 1000px; cursor: pointer;
+            opacity: 0; transform: translateY(80px);
+            transition: opacity 0.6s ease-out, transform 1s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .flip-container.visible { opacity: 1; transform: translateY(0); }
+
+        .flip-inner {
+            position: relative; width: 100%; height: 100%; text-align: center;
+            transition: transform 0.8s cubic-bezier(0.4, 0.2, 0.2, 1); transform-style: preserve-3d;
+        }
+        .flip-container:hover .flip-inner { transform: rotateY(180deg); } /* PC 悬停 */
+        .flip-container.flipped .flip-inner { transform: rotateY(180deg); } /* 手机点击 */
+
+        .flip-front, .flip-back {
+            position: absolute; width: 100%; height: 100%; -webkit-backface-visibility: hidden; backface-visibility: hidden;
+            border-radius: 24px; padding: 2rem; display: flex; flex-direction: column; align-items: center; justify-content: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05); 
+        }
+        .flip-front { background: rgba(255, 255, 255, 0.6); border: 1px solid rgba(255,255,255,0.8); backdrop-filter: blur(10px); }
+        .flip-back { background: white; transform: rotateY(180deg); border: 2px solid var(--accent-color); }
+
+        .info-icon { font-size: 3.5rem; margin-bottom: 1.5rem; color: var(--accent-color); }
+        .info-title { font-size: 1.4rem; font-weight: 800; color: #334155; }
+        .info-hint { font-size: 0.75rem; color: #94a3b8; margin-top: 1.5rem; border: 1px dashed #cbd5e1; padding: 4px 12px; border-radius: 20px; }
+        .info-text-back { font-size: 1rem; color: #475569; line-height: 1.8; font-weight: 500; text-align: left; }
+
+        /* === 6. 第三屏：核心入口 === */
+        .section-cards {
+            min-height: 80vh; display: flex; flex-direction: column; justify-content: center; padding: 2rem 2rem 8rem 2rem;
+            perspective: 1500px;
+        }
+        .card-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem;
+            max-width: 1200px; margin: 0 auto; width: 100%; transform-style: preserve-3d;
+        }
+        .clean-card {
+            background: rgba(255, 255, 255, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            border-radius: 30px; padding: 3rem 2rem; cursor: pointer;
+            display: flex; flex-direction: column; align-items: center; text-align: center;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.05);
+            opacity: 0; transform: translateY(100px) translateZ(-200px) rotateX(45deg);
+            transition: opacity 0.8s ease-out, transform 1s cubic-bezier(0.34, 1.56, 0.64, 1);
+            transform-style: preserve-3d; 
+        }
+        .clean-card.visible { opacity: 1; transform: translateY(0) translateZ(0) rotateX(0deg); }
+        .card-icon { font-size: 3.5rem; margin-bottom: 1.5rem; color: #334155; transform: translateZ(40px); transition: color 0.3s; }
+        .card-title { font-size: 1.8rem; font-weight: 800; color: #0f172a; margin-bottom: 0.5rem; transform: translateZ(30px); }
+        .card-text { font-size: 0.9rem; color: #64748b; margin-bottom: 0; transform: translateZ(20px); }
+        .clean-card:hover .card-icon { color: var(--hover-color); }
+        .clean-card:hover { background: rgba(255,255,255,0.95); box-shadow: 0 30px 70px rgba(0,0,0,0.15); }
+
+        /* === 7. 底部 Dock (深色高对比) === */
+        .dock-wrapper { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); z-index: 90; }
+        
+        .dock-container {
+            background: rgba(30, 41, 59, 0.9); /* 深色底 */
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 10px 24px; border-radius: 100px;
+            display: flex; gap: 24px; align-items: center;
+            box-shadow: 0 20px 50px -10px rgba(0,0,0,0.3);
+            color: rgba(255, 255, 255, 0.9);
+        }
+        .dock-btn {
+            display: flex; align-items: center; gap: 8px; padding: 8px 16px; border-radius: 100px;
+            font-size: 0.85rem; font-weight: 700; 
+            color: rgba(255, 255, 255, 0.7);
+            cursor: pointer; transition: all 0.2s;
+        }
+        .dock-btn:hover { background: rgba(255,255,255,0.1); color: white; transform: translateY(-2px); }
+        .dock-btn i.text-green-500 { color: #4ade80 !important; }
+        .dock-btn i.text-red-500 { color: #f87171 !important; }
+        .dock-btn i.text-purple-500 { color: #c084fc !important; }
+
+        /* 动画 */
+        @keyframes slideUpFade { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes bounce { 0%, 20%, 50%, 80%, 100% {transform:translateY(0);} 40% {transform:translateY(-10px);} 60% {transform:translateY(-5px);} }
+        
         /* 移动端适配 */
         @media (max-width: 768px) {
-            .typing-effect { font-size: 1.5rem; white-space: normal; border-right: none; animation: none; }
-            .dock-bar { width: 90%; justify-content: space-around; padding: 0.8rem 1rem; gap: 0; margin-bottom: 1rem; }
-            .mail-float { bottom: 20px; right: 20px; } /* 手机上往里挪一点 */
+            .hero-title { font-size: 3rem; }
+            .dock-container { width: 90vw; justify-content: space-around; padding: 8px 10px; gap: 5px; }
+            .dock-btn { padding: 8px 10px; font-size: 0.75rem; gap: 4px; }
+            .section-bridge { gap: 1.5rem; padding-top: 4rem; }
+            /* 手机上邮箱胶囊变小圆钮 */
+            .mail-capsule span { display: none; }
+            .mail-capsule { padding: 12px; width: 48px; height: 48px; justify-content: center; bottom: 100px; right: 20px; }
         }
     </style>
 </head>
@@ -162,107 +195,169 @@
 
     <div class="glass-overlay"></div>
 
-    <div class="content-layer">
-        
-        <nav class="nav-bar">
-            <div class="flex items-center gap-3">
-                <div class="w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-md overflow-hidden">
-                    <img src="logo.svg" class="w-full h-full object-cover" onerror="this.style.display='none'; this.parentNode.innerHTML='<i class=\'fa-solid fa-bolt text-slate-800\'></i>'">
-                </div>
-                <span class="font-black text-xl text-slate-800 tracking-widest">这语夯</span>
-            </div>
-            <div class="hidden md:block font-bold text-slate-500 opacity-60 text-sm">V33.0 全息修正版</div>
-        </nav>
-
-        <div class="text-center mt-8 mb-4 px-4">
-            <div class="typing-container">
-                <h1 class="text-4xl md:text-6xl font-black text-slate-900 mb-2 typing-effect">
-                    拒绝内卷 · 换个赛道
-                </h1>
-            </div>
-            <p class="text-lg text-slate-600 font-bold tracking-widest uppercase mt-2">
-                语言连接世界 · 机会就在脚下
-            </p>
+    <div class="logo-wrapper" onclick="window.scrollTo(0,0)">
+        <div class="logo-box">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="text-slate-900">
+                <path d="M21 12C21 12 20 6 13 6C6 6 3 12 3 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                <path d="M18 14C18 14 17 10 12 10C7 10 5 14 5 14" stroke="currentColor" stroke-width="2" stroke-linecap="round" class="opacity-60"/>
+            </svg>
         </div>
-
-        <div class="card-container">
-            <div class="pass-card card-euro" onclick="window.location.href='euro.html'">
-                <div class="icon-circle"><i class="fa-solid fa-earth-europe"></i></div>
-                <h2 class="text-2xl font-black text-slate-800 mb-2">欧语视界</h2>
-                <p class="text-sm text-slate-500 mb-3">法 / 西 / 德 / 意</p>
-                <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-xs font-bold">教父 / 奢侈品 / 工业</span>
-            </div>
-            <div class="pass-card card-arab" onclick="window.location.href='arab.html'">
-                <div class="icon-circle"><i class="fa-solid fa-mosque"></i></div>
-                <h2 class="text-2xl font-black text-slate-800 mb-2">掘金中东</h2>
-                <p class="text-sm text-slate-500 mb-3">阿拉伯语 (Arabic)</p>
-                <span class="bg-amber-100 text-amber-700 px-3 py-1 rounded-full text-xs font-bold">石油 / 新能源 / 驻外高薪</span>
-            </div>
-            <div class="pass-card card-asia" onclick="window.location.href='asia.html'">
-                <div class="icon-circle"><i class="fa-solid fa-torii-gate"></i></div>
-                <h2 class="text-2xl font-black text-slate-800 mb-2">赛博亚洲</h2>
-                <p class="text-sm text-slate-500 mb-3">日韩 / 俄语 / 东南亚</p>
-                <span class="bg-pink-100 text-pink-700 px-3 py-1 rounded-full text-xs font-bold">二次元 / 电商 / 快乐老家</span>
-            </div>
-        </div>
-
-        <div class="info-section">
-            <div class="grid md:grid-cols-3 gap-4">
-                <div class="info-card group">
-                    <i class="fa-solid fa-sack-dollar text-2xl text-green-600 mb-2 group-hover:scale-110 transition"></i>
-                    <h4 class="font-bold text-slate-800">薪资降维打击</h4>
-                    <p class="text-xs text-slate-500 mt-1">国内月薪6k，驻外阿语/法语岗起薪20k+。三年买房不是梦。</p>
-                </div>
-                <div class="info-card group">
-                    <i class="fa-solid fa-chess-knight text-2xl text-purple-600 mb-2 group-hover:scale-110 transition"></i>
-                    <h4 class="font-bold text-slate-800">稀缺赛道</h4>
-                    <p class="text-xs text-slate-500 mt-1">英语卷成红海，小语种却是刚需。在细分领域，你就是专家。</p>
-                </div>
-                <div class="info-card group">
-                    <i class="fa-solid fa-compass text-2xl text-amber-600 mb-2 group-hover:scale-110 transition"></i>
-                    <h4 class="font-bold text-slate-800">国家战略风口</h4>
-                    <p class="text-xs text-slate-500 mt-1">跟着企业出海走。TikTok去印尼，华为去拉美，都需要你。</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="mt-auto dock-bar">
-            
-            <div class="dock-item" onclick="window.location.href='tools.html'">
-                <div class="dock-icon bg-green-100 text-green-600">
-                    <i class="fa-solid fa-toolbox"></i>
-                </div>
-                <span class="text-xs font-bold">学习军火库</span>
-            </div>
-
-            <div class="w-px bg-slate-400 h-8 self-center opacity-30"></div>
-
-            <div class="dock-item" onclick="window.location.href='community.html'">
-                <div class="dock-icon bg-red-100 text-red-600">
-                    <i class="fa-solid fa-comments"></i>
-                </div>
-                <span class="text-xs font-bold">校友吐槽</span>
-            </div>
-            
-            <div class="w-px bg-slate-400 h-8 self-center opacity-30"></div>
-
-            <div class="dock-item" onclick="alert('🚀 开发进度提示：\n\n【未来规划】\n1. 全球薪资计算器\n2. 前后辈经验交流区\n\n(敬请期待！)')">
-                <div class="dock-icon bg-indigo-100 text-indigo-600">
-                    <i class="fa-solid fa-rocket"></i>
-                </div>
-                <span class="text-xs font-bold">更多</span>
-            </div>
-
-        </div>
-
-        <div class="mail-float">
-            <a href="mailto:lizhulangnb666@gmail.com" class="mail-btn">
-                <i class="fa-solid fa-envelope"></i>
-            </a>
-            <div class="mail-pop">lizhulangnb666@gmail.com</div>
-        </div>
-
+        <span class="font-black text-xl text-slate-900 tracking-tight">这语夯</span>
     </div>
 
+    <a href="mailto:lizhulangnb666@gmail.com" class="mail-capsule">
+        <i class="fa-solid fa-envelope"></i>
+        <span>lizhulangnb666@gmail.com</span>
+    </a>
+
+    <section class="section-hero">
+        <h1 class="hero-title">
+            拒绝内卷<br>
+            <span class="gradient-text">换个赛道</span>
+        </h1>
+        <p class="hero-desc">
+            语言连接世界 · 信息决定未来<br>
+            打破信息差，从这里开始探索全球职业机遇。
+        </p>
+        <div class="scroll-hint" onclick="document.getElementById('bridge-area').scrollIntoView()">
+            <i class="fa-solid fa-chevron-down"></i>
+        </div>
+    </section>
+
+    <section id="bridge-area" class="section-bridge">
+        
+        <div class="flip-container" style="--accent-color: #22c55e;" onclick="toggleFlip(this)">
+            <div class="flip-inner">
+                <div class="flip-front">
+                    <div class="info-icon"><i class="fa-solid fa-sack-dollar"></i></div>
+                    <h3 class="info-title">薪资降维打击</h3>
+                    <div class="info-hint">Hover / Tap</div>
+                </div>
+                <div class="flip-back bg-green-50 border-green-200">
+                    <p class="info-text-back text-green-900">
+                        <span class="font-black text-2xl block mb-2">3倍起薪</span>
+                        国内英语岗卷到月薪 6k？<br>驻外阿语/法语岗起薪 <span class="font-bold">20k+</span>。<br>包吃包住，三年全款买房不是梦。
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="flip-container" style="--accent-color: #8b5cf6;" onclick="toggleFlip(this)">
+            <div class="flip-inner">
+                <div class="flip-front">
+                    <div class="info-icon"><i class="fa-solid fa-users-slash"></i></div>
+                    <h3 class="info-title">稀缺性红利</h3>
+                    <div class="info-hint">Hover / Tap</div>
+                </div>
+                <div class="flip-back bg-purple-50 border-purple-200">
+                    <p class="info-text-back text-purple-900">
+                        <span class="font-black text-2xl block mb-2">无可替代</span>
+                        AI 能翻译文档，但不能替老板喝酒。<br>懂语言 + 懂文化 + 能驻外 = <span class="font-bold">专家</span>。<br>在细分领域，你就是唯一。
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="flip-container" style="--accent-color: #f59e0b;" onclick="toggleFlip(this)">
+            <div class="flip-inner">
+                <div class="flip-front">
+                    <div class="info-icon"><i class="fa-solid fa-compass"></i></div>
+                    <h3 class="info-title">国家战略风口</h3>
+                    <div class="info-hint">Hover / Tap</div>
+                </div>
+                <div class="flip-back bg-amber-50 border-amber-200">
+                    <p class="info-text-back text-amber-900">
+                        <span class="font-black text-2xl block mb-2">出海大潮</span>
+                        跟着“一带一路”走。<br>基建狂魔、互联网大厂都在出海。<br>全球化是未来十年的<span class="font-bold">最大增量</span>。
+                    </p>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+    <section id="cards-area" class="section-cards">
+        <div class="text-center mb-16 opacity-0 transition-all duration-1000 transform translate-y-10" id="cards-title">
+            <span class="text-sm font-bold text-slate-400 tracking-[0.2em] uppercase">CHOOSE YOUR BATTLEFIELD</span>
+        </div>
+        <div class="card-grid">
+            <div class="clean-card" style="--hover-color: #3b82f6;" onclick="window.location.href='euro.html'" 
+                 data-tilt data-tilt-glare data-tilt-max-glare="0.2" data-tilt-scale="1.02">
+                <div class="card-icon"><i class="fa-solid fa-earth-europe"></i></div>
+                <h2 class="card-title">欧语视界</h2>
+                <p class="card-text">法 / 西 / 德 / 意</p>
+            </div>
+            <div class="clean-card" style="--hover-color: #f59e0b;" onclick="window.location.href='arab.html'" 
+                 data-tilt data-tilt-glare data-tilt-max-glare="0.2" data-tilt-scale="1.02">
+                <div class="card-icon"><i class="fa-solid fa-mosque"></i></div>
+                <h2 class="card-title">掘金中东</h2>
+                <p class="card-text">阿拉伯语 (Arabic)</p>
+            </div>
+            <div class="clean-card" style="--hover-color: #ec4899;" onclick="window.location.href='asia.html'" 
+                 data-tilt data-tilt-glare data-tilt-max-glare="0.2" data-tilt-scale="1.02">
+                <div class="card-icon"><i class="fa-solid fa-torii-gate"></i></div>
+                <h2 class="card-title">赛博亚洲</h2>
+                <p class="card-text">日 / 韩 / 俄 / 东南亚</p>
+            </div>
+        </div>
+    </section>
+
+    <div class="dock-wrapper">
+        <div class="dock-container">
+            <div class="dock-btn" onclick="window.location.href='tools.html'">
+                <i class="fa-solid fa-toolbox text-green-500 text-lg"></i> 学习军火库
+            </div>
+            <div class="w-px h-4 bg-slate-400 opacity-30"></div>
+            <div class="dock-btn" onclick="window.location.href='community.html'">
+                <i class="fa-solid fa-comments text-red-500 text-lg"></i> 校友吐槽
+            </div>
+            <div class="w-px h-4 bg-slate-400 opacity-30"></div>
+            <div class="dock-btn" onclick="alert('🚀 敬请期待：\n\n1. 签证指南 (Visa Guide)\n2. 薪资计算器\n\nComing Soon...')">
+                <i class="fa-solid fa-layer-group text-purple-500 text-lg"></i> 更多功能
+            </div>
+        </div>
+    </div>
+
+    <footer class="text-center text-slate-400 text-xs py-8 relative z-20">
+        © 2025 这语夯 | 拒绝信息差
+    </footer>
+
+    <script>
+        // 手机点击翻转
+        function toggleFlip(element) {
+            if (window.innerWidth <= 768 || 'ontouchstart' in window) {
+                element.classList.toggle('flipped');
+            }
+        }
+
+        // Desktop 3D Tilt
+        if (window.innerWidth > 768) {
+            VanillaTilt.init(document.querySelectorAll(".clean-card"), { max: 8, speed: 400, glare: true, "max-glare": 0.2, scale: 1.02 });
+        }
+
+        // Scroll Animation
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry, index) => {
+                if (entry.isIntersecting) {
+                    if (entry.target.classList.contains('flip-container')) {
+                        // 强制延迟 300ms
+                        const delay = 300 + Array.from(entry.target.parentNode.children).indexOf(entry.target) * 150;
+                        setTimeout(() => { entry.target.classList.add('visible'); }, delay);
+                    } else if (entry.target.classList.contains('clean-card')) {
+                        const delay = (Array.from(entry.target.parentNode.children).indexOf(entry.target) + 1) * 200;
+                        setTimeout(() => { entry.target.classList.add('visible'); }, delay);
+                    } else if (entry.target.id === 'cards-title') {
+                        entry.target.style.opacity = 1; entry.target.style.transform = 'translateY(0)';
+                    }
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+        
+        document.querySelectorAll('.flip-container').forEach(el => observer.observe(el));
+        document.querySelectorAll('.clean-card').forEach(el => observer.observe(el));
+        const title = document.getElementById('cards-title');
+        if(title) observer.observe(title);
+    </script>
 </body>
 </html>
